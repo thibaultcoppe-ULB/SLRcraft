@@ -1,7 +1,7 @@
 cff-version: 1.2.0
 message: "If you use this software, please cite it as below."
 type: software
-title: "SLRcraft"
+title: "SLRcraft: An offline tool for systematic literature reviews (Version 1.0.0)"
 abstract: "A single-file, offline web application for conducting systematic literature reviews. SLRcraft covers the entire SLR pipeline: research question formulation, protocol definition, search documentation, reference import and deduplication, two-level screening with criteria evaluation, quality assessment, data extraction, PRISMA 2020 flow diagram, and export."
 authors:
   - family-names: "Coppe"
