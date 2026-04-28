@@ -1,5 +1,7 @@
 # SLRcraft
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.19852967.svg)](https://doi.org/10.5281/zenodo.19852967)
+
 **Votre assistant pour les revues systématiques de la littérature**
 
 SLRcraft est une application web mono-fichier, gratuite et entièrement offline, conçue pour accompagner toutes les étapes d'une revue systématique de la littérature (RSL). Aucune installation, aucun compte, aucun serveur : ouvrez le fichier HTML dans votre navigateur et commencez à travailler.
@@ -48,7 +50,7 @@ Ce projet est distribué sous licence [GPL v3](https://www.gnu.org/licenses/gpl-
 Si vous utilisez SLRcraft dans vos travaux, merci de le citer :
 
 ```
-Coppe, T. (2026). SLRcraft: An offline tool for systematic literature reviews (Version 1.0.0) [Software]. https://github.com/thibaultcoppe/SLRcraft
+Coppe, T. (2026). SLRcraft: A single-file tool for systematic literature reviews (Version 1.0.0) [Software]. https://doi.org/10.5281/zenodo.19852967
 ```
 
 Voir le fichier [CITATION.cff](CITATION.cff) pour le format de citation structuré.
@@ -62,6 +64,6 @@ Université libre de Bruxelles (ULB) — CRSE — Shift Research Unit
 
 Les contributions sont les bienvenues. Vous pouvez :
 
-- Signaler un bug ou proposer une amélioration via les [Issues](https://github.com/thibaultcoppe/SLRcraft/issues)
+- Signaler un bug ou proposer une amélioration via les [Issues](https://github.com/thibaultcoppe-ULB/SLRcraft/issues)
 - Proposer des modifications via une Pull Request
 - Forker le projet pour l'adapter à vos besoins
