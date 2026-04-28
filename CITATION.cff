@@ -1,8 +1,8 @@
 cff-version: 1.2.0
 message: "If you use this software, please cite it as below."
 type: software
-title: "SLRcraft: An offline tool for systematic literature reviews (Version 1.0.0) [Software]"
-abstract: "A single-file, offline web application for conducting systematic literature reviews. SLRcraft covers the entire SLR pipeline: research question formulation, protocol definition, search documentation, reference import and deduplication, two-level screening with criteria evaluation, quality assessment, data extraction, PRISMA 2020 flow diagram, and export."
+title: "SLRcraft : un outil offline pour les revues systématiques de la littérature (Version 1.0.0) [Logiciel]"
+abstract: "Application web mono-fichier et offline pour la conduite de revues systématiques de la littérature. SLRcraft couvre l'ensemble du pipeline RSL : formulation de la question de recherche, définition du protocole, documentation des recherches, import et dédoublonnage des références, double screening avec évaluation par critères, évaluation de la qualité, extraction de données, diagramme de flux PRISMA 2020, et export."
 authors:
   - family-names: "Coppe"
     given-names: "Thibault"
