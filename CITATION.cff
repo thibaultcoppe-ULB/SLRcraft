@@ -6,7 +6,7 @@ abstract: "A single-file, offline web application for conducting systematic lite
 authors:
   - family-names: "Coppe"
     given-names: "Thibault"
-    affiliation: "Universit\u00E9 libre de Bruxelles (ULB) \u2014 CRSE \u2014 Shift Research Unit"
+    affiliation: "Université libre de Bruxelles (ULB) — CRSE — Shift Research Unit"
 version: "1.0.0"
 date-released: "2026-04-28"
 license: GPL-3.0-or-later
