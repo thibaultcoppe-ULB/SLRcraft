@@ -1,0 +1,1378 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SLRcraft — Revue Systématique</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --primary: #6366f1;
+  --primary-light: #eef2ff;
+  --primary-dark: #4f46e5;
+  --primary-50: #e0e7ff;
+  --accent: #8b5cf6;
+  --success: #10b981;
+  --success-light: #d1fae5;
+  --success-dark: #059669;
+  --warning: #f59e0b;
+  --warning-light: #fef3c7;
+  --danger: #ef4444;
+  --danger-light: #fee2e2;
+  --danger-dark: #dc2626;
+  --gray-50: #f8fafc;
+  --gray-100: #f1f5f9;
+  --gray-200: #e2e8f0;
+  --gray-300: #cbd5e1;
+  --gray-400: #94a3b8;
+  --gray-500: #64748b;
+  --gray-600: #475569;
+  --gray-700: #334155;
+  --gray-800: #1e293b;
+  --gray-900: #0f172a;
+  --radius: 10px;
+  --radius-lg: 14px;
+  --shadow-sm: 0 1px 2px rgba(0,0,0,.05);
+  --shadow: 0 1px 3px rgba(0,0,0,.08), 0 1px 2px rgba(0,0,0,.04);
+  --shadow-md: 0 4px 6px -1px rgba(0,0,0,.07), 0 2px 4px rgba(0,0,0,.04);
+  --shadow-lg: 0 10px 15px -3px rgba(0,0,0,.08), 0 4px 6px rgba(0,0,0,.03);
+  --transition: .2s cubic-bezier(.4,0,.2,1);
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; background: var(--gray-50); color: var(--gray-800); line-height: 1.6; font-size: 14px; }
+
+/* ===== LAYOUT ===== */
+.app { display: flex; height: 100vh; overflow: hidden; }
+
+/* SIDEBAR */
+.sidebar { width: 264px; background: linear-gradient(180deg, #1e1b4b 0%, var(--gray-900) 100%); color: white; display: flex; flex-direction: column; flex-shrink: 0; }
+.sidebar-header { padding: 28px 22px 20px; border-bottom: 1px solid rgba(255,255,255,.06); }
+.sidebar-header h1 { font-size: 20px; font-weight: 800; letter-spacing: -.5px; display: flex; align-items: center; gap: 10px; }
+.sidebar-header .logo-badge { display: flex; align-items: center; gap: 10px; background: linear-gradient(135deg, #1e1b4b, #312e81); padding: 14px 18px; border-radius: 12px; box-shadow: 0 2px 12px rgba(0,0,0,.3); }
+.sidebar-header p { font-size: 11px; color: var(--gray-400); margin-top: 4px; letter-spacing: .3px; }
+.sidebar-nav { flex: 1; overflow-y: auto; padding: 8px 10px 20px; }
+.nav-section { margin-bottom: 4px; }
+.nav-section-title { font-size: 10px; text-transform: uppercase; letter-spacing: 1.2px; color: var(--gray-500); padding: 18px 10px 6px; font-weight: 600; }
+.nav-item { display: flex; align-items: center; gap: 11px; padding: 9px 12px; border-radius: 8px; cursor: pointer; font-size: 13px; color: var(--gray-400); transition: var(--transition); margin-bottom: 1px; font-weight: 500; }
+.nav-item:hover { background: rgba(255,255,255,.07); color: var(--gray-200); }
+.nav-item.active { background: var(--primary); color: white; box-shadow: 0 2px 10px rgba(99,102,241,.4); }
+.nav-item .step-num { width: 26px; height: 26px; border-radius: 7px; background: rgba(255,255,255,.08); display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; flex-shrink: 0; }
+.nav-item.active .step-num { background: rgba(255,255,255,.2); }
+.nav-item .badge { margin-left: auto; background: rgba(255,255,255,.1); color: var(--gray-400); font-size: 11px; padding: 2px 8px; border-radius: 6px; font-weight: 600; }
+.nav-item.active .badge { background: rgba(255,255,255,.2); color: white; }
+
+/* MAIN */
+.main { flex: 1; display: flex; flex-direction: column; overflow: hidden; background: var(--gray-50); }
+.main-header { padding: 18px 36px; background: white; border-bottom: 1px solid var(--gray-200); display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; box-shadow: var(--shadow-sm); }
+.main-header h2 { font-size: 18px; font-weight: 700; letter-spacing: -.3px; color: var(--gray-900); }
+.main-content { flex: 1; overflow-y: auto; padding: 28px 36px; }
+
+/* ===== COMPONENTS ===== */
+.card { background: white; border-radius: var(--radius-lg); border: 1px solid var(--gray-200); padding: 24px; margin-bottom: 20px; box-shadow: var(--shadow); transition: var(--transition); }
+.card:hover { box-shadow: var(--shadow-md); }
+.card h3 { font-size: 15px; font-weight: 700; margin-bottom: 10px; color: var(--gray-900); letter-spacing: -.2px; }
+.card p.desc { color: var(--gray-500); font-size: 13px; margin-bottom: 16px; line-height: 1.6; }
+
+.btn { display: inline-flex; align-items: center; gap: 6px; padding: 8px 16px; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; border: none; transition: var(--transition); letter-spacing: -.1px; }
+.btn:active { transform: scale(.97); }
+.btn-primary { background: var(--primary); color: white; box-shadow: 0 1px 3px rgba(99,102,241,.3); }
+.btn-primary:hover { background: var(--primary-dark); box-shadow: 0 2px 6px rgba(99,102,241,.4); }
+.btn-secondary { background: white; color: var(--gray-700); border: 1px solid var(--gray-300); }
+.btn-secondary:hover { background: var(--gray-50); border-color: var(--gray-400); }
+.btn-success { background: var(--success); color: white; box-shadow: 0 1px 3px rgba(16,185,129,.3); }
+.btn-success:hover { background: var(--success-dark); }
+.btn-danger { background: var(--danger); color: white; }
+.btn-danger:hover { background: var(--danger-dark); }
+.btn-sm { padding: 6px 12px; font-size: 12px; }
+.btn-group { display: flex; gap: 8px; flex-wrap: wrap; }
+
+.form-group { margin-bottom: 16px; }
+.form-group label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 5px; color: var(--gray-700); }
+.form-group input, .form-group textarea, .form-group select {
+  width: 100%; padding: 9px 13px; border: 1px solid var(--gray-300); border-radius: 8px;
+  font-size: 13px; font-family: inherit; background: white; transition: var(--transition); color: var(--gray-800);
+}
+.form-group input:focus, .form-group textarea:focus, .form-group select:focus {
+  outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px var(--primary-light);
+}
+.form-group textarea { resize: vertical; min-height: 72px; }
+
+.tag { display: inline-flex; align-items: center; gap: 4px; padding: 3px 10px; border-radius: 6px; font-size: 11px; font-weight: 600; letter-spacing: .1px; }
+.tag-blue { background: var(--primary-light); color: var(--primary); }
+.tag-green { background: var(--success-light); color: var(--success); }
+.tag-yellow { background: var(--warning-light); color: var(--warning); }
+.tag-red { background: var(--danger-light); color: var(--danger); }
+.tag-gray { background: var(--gray-100); color: var(--gray-600); }
+
+.stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 14px; margin-bottom: 24px; }
+.stat-card { background: white; border: 1px solid var(--gray-200); border-radius: var(--radius-lg); padding: 18px; text-align: center; box-shadow: var(--shadow-sm); transition: var(--transition); }
+.stat-card:hover { box-shadow: var(--shadow); transform: translateY(-1px); }
+.stat-card .stat-value { font-size: 30px; font-weight: 800; color: var(--primary); letter-spacing: -1px; }
+.stat-card .stat-label { font-size: 11px; color: var(--gray-500); margin-top: 2px; font-weight: 500; text-transform: uppercase; letter-spacing: .5px; }
+
+table { width: 100%; border-collapse: collapse; font-size: 13px; }
+th { text-align: left; padding: 10px 14px; background: var(--gray-50); border-bottom: 2px solid var(--gray-200); font-weight: 600; color: var(--gray-500); font-size: 11px; text-transform: uppercase; letter-spacing: .6px; }
+td { padding: 11px 14px; border-bottom: 1px solid var(--gray-100); vertical-align: top; }
+tr { transition: var(--transition); }
+tr:hover td { background: var(--gray-50); }
+
+.empty-state { text-align: center; padding: 48px 24px; color: var(--gray-400); }
+.empty-state .empty-icon { font-size: 40px; margin-bottom: 10px; opacity: .7; }
+.empty-state p { font-size: 13px; }
+
+.progress-bar { height: 8px; background: var(--gray-200); border-radius: 4px; overflow: hidden; }
+.progress-bar-fill { height: 100%; background: linear-gradient(90deg, var(--primary), var(--accent)); border-radius: 4px; transition: width .4s cubic-bezier(.4,0,.2,1); }
+
+/* Modal */
+.modal-overlay { position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(15,23,42,.6); backdrop-filter: blur(4px); display:flex; align-items:center; justify-content:center; z-index:1000; animation: fadeIn .15s; }
+.modal { background: white; border-radius: 16px; padding: 28px; width: 90%; max-width: 700px; max-height: 85vh; overflow-y: auto; box-shadow: 0 25px 50px rgba(0,0,0,.15); animation: slideUp .2s; }
+.modal h3 { font-size: 17px; margin-bottom: 16px; font-weight: 700; }
+.modal-actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 20px; }
+@keyframes fadeIn { from { opacity:0 } to { opacity:1 } }
+@keyframes slideUp { from { opacity:0; transform:translateY(10px) } to { opacity:1; transform:none } }
+
+/* Criteria list */
+.criteria-list { display: flex; flex-direction: column; gap: 6px; }
+.criteria-item { display: flex; align-items: center; gap: 10px; padding: 10px 14px; background: var(--gray-50); border-radius: 8px; border: 1px solid var(--gray-200); transition: var(--transition); }
+.criteria-item:hover { background: white; border-color: var(--gray-300); }
+.criteria-item span { flex: 1; font-size: 13px; }
+.criteria-item .remove-btn { cursor: pointer; color: var(--gray-400); font-size: 18px; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; border-radius: 6px; transition: var(--transition); }
+.criteria-item .remove-btn:hover { color: var(--danger); background: var(--danger-light); }
+
+/* Screening card */
+.screening-card { border: 1px solid var(--gray-200); border-radius: var(--radius-lg); padding: 22px; margin-bottom: 16px; background: white; box-shadow: var(--shadow-sm); transition: var(--transition); }
+.screening-card:hover { box-shadow: var(--shadow); }
+.screening-card h4 { font-size: 14px; font-weight: 700; margin-bottom: 3px; color: var(--gray-900); line-height: 1.4; }
+.screening-card .authors { font-size: 12px; color: var(--gray-500); margin-bottom: 10px; }
+.screening-card .abstract { font-size: 13px; color: var(--gray-600); margin-bottom: 14px; line-height: 1.65; max-height: 140px; overflow-y: auto; padding: 12px; background: var(--gray-50); border-radius: 8px; border: 1px solid var(--gray-100); }
+.screening-card .meta { font-size: 11px; color: var(--gray-400); margin-bottom: 10px; }
+
+/* Criteria evaluation */
+.criteria-eval { margin: 14px 0; border: 1px solid var(--gray-200); border-radius: var(--radius); overflow: hidden; }
+.criteria-eval-header { background: var(--gray-50); padding: 10px 16px; font-size: 12px; font-weight: 700; color: var(--gray-600); text-transform: uppercase; letter-spacing: .5px; border-bottom: 1px solid var(--gray-200); }
+.criteria-eval-row { display: flex; align-items: center; padding: 10px 16px; border-bottom: 1px solid var(--gray-100); gap: 12px; }
+.criteria-eval-row:last-child { border-bottom: none; }
+.criteria-eval-row label { flex: 1; font-size: 13px; color: var(--gray-700); }
+.criteria-eval-row .eval-btns { display: flex; gap: 0; border-radius: 7px; overflow: hidden; border: 1px solid var(--gray-300); flex-shrink: 0; }
+.criteria-eval-row .eval-btn { padding: 5px 12px; font-size: 11px; font-weight: 600; cursor: pointer; border: none; background: white; color: var(--gray-500); transition: var(--transition); border-right: 1px solid var(--gray-200); }
+.criteria-eval-row .eval-btn:last-child { border-right: none; }
+.criteria-eval-row .eval-btn:hover { background: var(--gray-50); }
+.criteria-eval-row .eval-btn.selected-oui { background: var(--success); color: white; }
+.criteria-eval-row .eval-btn.selected-non { background: var(--danger); color: white; }
+.criteria-eval-row .eval-btn.selected-nsp { background: var(--warning); color: white; }
+/* Saved indicator */
+.criteria-eval-row .save-indicator { font-size: 10px; color: var(--success); margin-left: 4px; opacity: 0; transition: opacity .3s; }
+.criteria-eval-row .save-indicator.visible { opacity: 1; }
+
+/* Article links */
+.article-links { display: flex; gap: 8px; flex-wrap: wrap; margin: 8px 0; }
+.article-link { display: inline-flex; align-items: center; gap: 5px; padding: 5px 12px; background: var(--primary-light); color: var(--primary); border-radius: 6px; font-size: 11px; text-decoration: none; font-weight: 600; transition: var(--transition); }
+.article-link:hover { background: var(--primary); color: white; }
+
+/* Quality grid */
+.quality-grid { border: 1px solid var(--gray-200); border-radius: var(--radius); overflow: hidden; margin: 12px 0; }
+.quality-grid-header { background: var(--gray-50); padding: 10px 14px; font-size: 12px; font-weight: 700; border-bottom: 1px solid var(--gray-200); display: flex; justify-content: space-between; align-items: center; text-transform: uppercase; letter-spacing: .4px; color: var(--gray-600); }
+.quality-grid-item { display: flex; align-items: center; gap: 10px; padding: 9px 14px; border-bottom: 1px solid var(--gray-100); font-size: 13px; }
+.quality-grid-item:last-child { border-bottom: none; }
+.quality-grid-item select { width: 130px; padding: 5px 8px; border: 1px solid var(--gray-300); border-radius: 6px; font-size: 12px; }
+.quality-grid-item label { flex: 1; }
+
+.quality-stars { display: flex; gap: 3px; }
+.quality-stars span { cursor: pointer; font-size: 22px; color: var(--gray-300); transition: var(--transition); }
+.quality-stars span.filled { color: #f59e0b; }
+.quality-stars span:hover { transform: scale(1.15); }
+
+/* PRISMA 2020 Flow Diagram — table layout */
+.prisma-table { width: 100%; border-collapse: separate; border-spacing: 12px 8px; table-layout: fixed; }
+.prisma-table td { vertical-align: top; padding: 0; }
+.prisma-table .pcol-header { text-align: center; padding: 10px 14px; font-size: 12px; font-weight: 700; color: white; border-radius: 8px; letter-spacing: .2px; }
+.pcol-header.col-db { background: linear-gradient(135deg, #3b6e8f, #2c5f7c); }
+.pcol-header.col-update { background: linear-gradient(135deg, #2c7a7a, #1e6b6b); }
+.pcol-header.col-other { background: linear-gradient(135deg, #5a6b7a, #475569); }
+.pnode { background: white; border: 2px solid var(--gray-300); border-radius: 10px; padding: 12px 14px; box-shadow: var(--shadow-sm); }
+.pnode.pmain { border-color: var(--primary); }
+.pnode.pexcl { border-color: var(--gray-400); background: var(--gray-50); }
+.pnode.pfinal { border-color: var(--success); background: #f0fdf4; }
+.pnode .pt { font-size: 13px; font-weight: 600; color: var(--gray-800); line-height: 1.4; }
+.pnode .pv { font-size: 20px; font-weight: 800; color: var(--primary); }
+.pnode.pexcl .pv { color: var(--gray-600); font-size: 16px; }
+.pnode.pfinal .pv { color: var(--success); }
+.pnode .pd { font-size: 11px; color: var(--gray-500); margin-top: 3px; line-height: 1.5; }
+.pnode .pd ul { margin: 2px 0 0 14px; padding: 0; }
+.pnode .pd li { margin-bottom: 1px; }
+.parrow-down { text-align: center; color: var(--gray-300); font-size: 18px; line-height: 1; padding: 2px 0; }
+.parrow-right { color: var(--gray-400); font-size: 14px; text-align: center; vertical-align: middle; width: 24px; }
+.prow-flow td { padding-top: 4px; padding-bottom: 4px; }
+.pnode-empty { border: 2px dashed var(--gray-300); border-radius: 10px; padding: 12px 14px; text-align: center; color: var(--gray-400); font-size: 12px; }
+
+/* Duplicate review */
+.dup-group { border: 1px solid var(--warning); border-radius: var(--radius-lg); padding: 16px; margin-bottom: 14px; background: #fffbeb; }
+.dup-group-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+.dup-group-header .dup-label { font-size: 12px; font-weight: 700; color: var(--warning); text-transform: uppercase; letter-spacing: .5px; }
+.dup-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.dup-card { background: white; border: 1px solid var(--gray-200); border-radius: 8px; padding: 12px; font-size: 12px; }
+.dup-card h5 { font-size: 13px; font-weight: 600; margin-bottom: 4px; color: var(--gray-800); line-height: 1.4; }
+.dup-card .dup-meta { color: var(--gray-500); font-size: 11px; margin-bottom: 6px; }
+.dup-card .dup-source { font-size: 10px; color: var(--gray-400); }
+.dup-actions { display: flex; gap: 8px; margin-top: 10px; justify-content: flex-end; }
+
+/* Lock icon */
+.lock-indicator { display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; border-radius: 8px; font-size: 12px; font-weight: 600; }
+.lock-indicator.locked { background: var(--warning-light); color: #92400e; }
+.lock-indicator.unlocked { background: var(--success-light); color: var(--success); }
+
+/* Dimension blocks */
+.dimension-block { border: 1px solid var(--gray-200); border-radius: 10px; padding: 16px; margin-bottom: 10px; background: var(--gray-50); transition: var(--transition); }
+.dimension-block:hover { background: white; border-color: var(--gray-300); }
+.dimension-block h4 { font-size: 13px; font-weight: 600; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
+.dimension-block .remove-dim { cursor: pointer; color: var(--gray-400); font-size: 16px; margin-left: auto; border-radius: 6px; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; transition: var(--transition); }
+.dimension-block .remove-dim:hover { color: var(--danger); background: var(--danger-light); }
+
+/* Export */
+.export-options { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; }
+.export-option { border: 1px solid var(--gray-200); border-radius: var(--radius-lg); padding: 20px; text-align: center; cursor: pointer; transition: var(--transition); background: white; }
+.export-option:hover { border-color: var(--primary); background: var(--primary-light); transform: translateY(-2px); box-shadow: var(--shadow-md); }
+.export-option .export-icon { font-size: 28px; margin-bottom: 8px; }
+.export-option .export-label { font-size: 13px; font-weight: 600; }
+
+/* Metadata block */
+.meta-block { background: var(--gray-50); border: 1px solid var(--gray-200); border-radius: 10px; padding: 14px; margin: 12px 0; }
+.meta-block-title { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; color: var(--gray-500); margin-bottom: 8px; }
+.meta-block-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; font-size: 12px; color: var(--gray-700); }
+
+/* Toast */
+.toast { position: fixed; top: 20px; right: 20px; padding: 14px 20px; border-radius: 10px; font-size: 13px; font-weight: 600; z-index: 2000; box-shadow: var(--shadow-lg); display: flex; align-items: center; gap: 10px; animation: slideIn .25s; max-width: 420px; }
+.toast-included { background: var(--success); color: white; }
+.toast-excluded { background: var(--danger); color: white; }
+.toast-uncertain { background: var(--warning); color: white; }
+.toast-info { background: var(--primary); color: white; }
+.toast-error { background: var(--gray-800); color: white; }
+@keyframes slideIn { from { opacity:0; transform:translateX(30px) } to { opacity:1; transform:none } }
+
+.hidden { display: none !important; }
+
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--gray-300); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--gray-400); }
+
+@media (max-width: 900px) { .sidebar { width: 220px; } .main-content { padding: 20px; } }
+</style>
+</head>
+<body>
+
+<div class="app">
+  <div class="sidebar">
+    <div class="sidebar-header">
+      <div class="logo-badge">
+        <svg width="28" height="28" viewBox="0 0 20 20" fill="none"><rect x="2" y="3" width="7" height="9" rx="1.5" stroke="#a5b4fc" stroke-width="1.5"/><rect x="11" y="3" width="7" height="9" rx="1.5" stroke="#a5b4fc" stroke-width="1.5"/><path d="M6 15v3M10 14v4M14 15v3" stroke="#818cf8" stroke-width="1.5" stroke-linecap="round"/></svg>
+        <span style="font-size:18px;font-weight:700;color:white;letter-spacing:-.3px">SLRcraft</span>
+      </div>
+      <p style="margin-top:8px;font-size:11px;color:var(--gray-400);line-height:1.4">Votre assistant pour les revues systématiques de la littérature</p>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section">
+        <div class="nav-section-title">Tableau de bord</div>
+        <div class="nav-item active" data-page="dashboard"><span class="step-num">&#9679;</span> Vue d'ensemble</div>
+      </div>
+      <div class="nav-section">
+        <div class="nav-section-title">Étapes de la RSL</div>
+        <div class="nav-item" data-page="step1"><span class="step-num">1</span> Question de recherche</div>
+        <div class="nav-item" data-page="step2"><span class="step-num">2</span> Protocole</div>
+        <div class="nav-item" data-page="step3"><span class="step-num">3</span> Recherche documentaire</div>
+        <div class="nav-item" data-page="step4"><span class="step-num">4</span> Import & Dédoublonnage <span class="badge" id="badge-import">0</span></div>
+        <div class="nav-item" data-page="step5"><span class="step-num">5</span> Screening Titre/Abstract <span class="badge" id="badge-screen1">0</span></div>
+        <div class="nav-item" data-page="step6"><span class="step-num">6</span> Screening Texte intégral <span class="badge" id="badge-screen2">0</span></div>
+        <div class="nav-item" data-page="step7"><span class="step-num">7</span> Évaluation qualité</div>
+        <div class="nav-item" data-page="step8"><span class="step-num">8</span> Extraction données</div>
+        <div class="nav-item" data-page="step9"><span class="step-num">9</span> Synthèse & PRISMA</div>
+      </div>
+      <div class="nav-section">
+        <div class="nav-section-title">Outils</div>
+        <div class="nav-item" data-page="update"><span class="step-num">↻</span> Mise à jour <span class="badge" id="badge-update">0</span></div>
+        <div class="nav-item" data-page="export"><span class="step-num">&#8615;</span> Export</div>
+      </div>
+    </nav>
+    <div style="padding:14px 18px;border-top:1px solid rgba(255,255,255,.06);font-size:10px;color:var(--gray-500);line-height:1.5">
+      <div style="font-weight:600;color:var(--gray-400)">Thibault Coppe</div>
+      <div>ULB — CRSE — Shift Research Unit</div>
+    </div>
+  </div>
+
+  <div class="main">
+    <div class="main-header">
+      <h2 id="page-title">Vue d'ensemble</h2>
+      <div class="btn-group">
+        <button class="btn btn-secondary btn-sm" onclick="exportProject()">Sauvegarder le projet</button>
+        <button class="btn btn-secondary btn-sm" onclick="document.getElementById('import-project').click()">Charger un projet</button>
+        <input type="file" id="import-project" accept=".json" class="hidden" onchange="importProject(event)">
+      </div>
+    </div>
+    <div class="main-content" id="main-content"></div>
+  </div>
+</div>
+
+<div id="modal-container"></div>
+
+<script>
+// ============================================================
+// DATABASE
+// ============================================================
+const DB_NAME = 'RSL_DB'; const DB_VERSION = 6; let db;
+function openDB() {
+  return new Promise((resolve, reject) => {
+    const req = indexedDB.open(DB_NAME, DB_VERSION);
+    req.onupgradeneeded = e => {
+      const d = e.target.result;
+      if (!d.objectStoreNames.contains('articles')) { const s = d.createObjectStore('articles',{keyPath:'id',autoIncrement:true}); s.createIndex('status','status',{unique:false}); }
+      if (!d.objectStoreNames.contains('config')) d.createObjectStore('config',{keyPath:'key'});
+      if (!d.objectStoreNames.contains('extractions')) d.createObjectStore('extractions',{keyPath:'articleId'});
+    };
+    req.onsuccess = e => { db = e.target.result; resolve(db); };
+    req.onerror = e => reject(e);
+  });
+}
+function dbPut(s,d){ return new Promise((ok,no)=>{ const r=db.transaction(s,'readwrite').objectStore(s).put(d); r.onsuccess=()=>ok(r.result); r.onerror=()=>no(r.error); }); }
+function dbGet(s,k){ return new Promise((ok,no)=>{ const r=db.transaction(s,'readonly').objectStore(s).get(k); r.onsuccess=()=>ok(r.result); r.onerror=()=>no(r.error); }); }
+function dbGetAll(s){ return new Promise((ok,no)=>{ const r=db.transaction(s,'readonly').objectStore(s).getAll(); r.onsuccess=()=>ok(r.result); r.onerror=()=>no(r.error); }); }
+function dbDelete(s,k){ return new Promise((ok,no)=>{ const r=db.transaction(s,'readwrite').objectStore(s).delete(k); r.onsuccess=()=>ok(); r.onerror=()=>no(r.error); }); }
+function dbClear(s){ return new Promise((ok,no)=>{ const r=db.transaction(s,'readwrite').objectStore(s).clear(); r.onsuccess=()=>ok(); r.onerror=()=>no(r.error); }); }
+async function getConfig(k,d=null){ const r=await dbGet('config',k); return r?r.value:d; }
+async function setConfig(k,v){ await dbPut('config',{key:k,value:v}); }
+
+// ============================================================
+// STATE & NAV
+// ============================================================
+let currentPage = 'dashboard'; let allArticles = [];
+document.querySelectorAll('.nav-item').forEach(item => {
+  item.addEventListener('click', () => {
+    document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+    item.classList.add('active');
+    currentPage = item.dataset.page;
+    document.getElementById('page-title').textContent = item.childNodes[1]?.textContent?.trim() || item.textContent.trim();
+    renderPage();
+  });
+});
+
+const STATUS = {
+  IMPORTED:'imported', DUPLICATE:'duplicate',
+  SCREEN1_PENDING:'screen1_pending', SCREEN1_INCLUDED:'screen1_included', SCREEN1_EXCLUDED:'screen1_excluded',
+  SCREEN2_PENDING:'screen2_pending', SCREEN2_INCLUDED:'screen2_included', SCREEN2_EXCLUDED:'screen2_excluded',
+  QUALITY_PENDING:'quality_pending', QUALITY_DONE:'quality_done',
+  EXTRACTION_DONE:'extraction_done', FINAL:'final'
+};
+const STATUS_LABELS = {
+  imported:'Importé', duplicate:'Doublon',
+  screen1_pending:'Screening 1 — En attente', screen1_included:'Screening 1 — Inclus', screen1_excluded:'Screening 1 — Exclu',
+  screen2_pending:'Screening 2 — En attente', screen2_included:'Screening 2 — Inclus', screen2_excluded:'Screening 2 — Exclu',
+  quality_pending:'Qualité — En attente', quality_done:'Qualité — Évalué',
+  extraction_done:'Extraction faite', final:'Inclus final'
+};
+function statusTag(st) {
+  const c = { imported:'gray',duplicate:'red',screen1_pending:'yellow',screen1_included:'green',screen1_excluded:'red',screen2_pending:'yellow',screen2_included:'green',screen2_excluded:'red',quality_pending:'yellow',quality_done:'blue',extraction_done:'blue',final:'green' };
+  return `<span class="tag tag-${c[st]||'gray'}">${STATUS_LABELS[st]||st}</span>`;
+}
+
+// Predefined quality grids
+const QUALITY_GRIDS = {
+  mmat: { name:'MMAT', desc:'Mixed Methods Appraisal Tool', criteria:[
+    {id:'mmat1',label:'Question de recherche claire'},{id:'mmat2',label:'Données collectées adéquates'},{id:'mmat3',label:'Analyse appropriée'},{id:'mmat4',label:'Résultats étayés'},{id:'mmat5',label:'Cohérence globale'}
+  ]},
+  casp: { name:'CASP Qualitatif', desc:'Critical Appraisal Skills Programme', criteria:[
+    {id:'c1',label:'Objectifs clairs'},{id:'c2',label:'Méthodo qualitative appropriée'},{id:'c3',label:'Recrutement adapté'},{id:'c4',label:'Collecte cohérente'},{id:'c5',label:'Relation chercheur-participants'},{id:'c6',label:'Éthique considérée'},{id:'c7',label:'Analyse rigoureuse'},{id:'c8',label:'Résultats clairs'},{id:'c9',label:'Contribution significative'}
+  ]},
+  quant: { name:'Grille quantitative éduc.', desc:'Études quantitatives en éducation', criteria:[
+    {id:'q1',label:'Hypothèses claires'},{id:'q2',label:'Design adapté'},{id:'q3',label:'Échantillon suffisant'},{id:'q4',label:'Variables valides'},{id:'q5',label:'Confondantes contrôlées'},{id:'q6',label:'Statistiques appropriées'},{id:'q7',label:'Tailles d\'effet'},{id:'q8',label:'Limites discutées'}
+  ]},
+  custom: { name:'Grille personnalisée', desc:'Vos propres critères', criteria:[] }
+};
+
+// ============================================================
+// HELPERS
+// ============================================================
+function esc(s){const d=document.createElement('div');d.textContent=s||'';return d.innerHTML;}
+function truncate(s,n){return s.length>n?s.substring(0,n)+'…':s;}
+function csvCell(v){const s=String(v||'').replace(/"/g,'""');return s.includes(',')||s.includes('\n')||s.includes('"')?`"${s}"`:s;}
+function downloadFile(n,c,t){const b=new Blob([c],{type:t+';charset=utf-8'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=n;a.click();URL.revokeObjectURL(a.href);}
+function showModal(h){document.getElementById('modal-container').innerHTML=`<div class="modal-overlay" onclick="if(event.target===this)closeModal()"><div class="modal">${h}</div></div>`;}
+function closeModal(){document.getElementById('modal-container').innerHTML='';}
+
+function toast(msg, type='info') {
+  const n = document.createElement('div');
+  n.className = `toast toast-${type}`;
+  const icons = { included:'✓', excluded:'✗', uncertain:'?', info:'i', error:'!' };
+  n.innerHTML = `<span style="font-size:16px;font-weight:800">${icons[type]||'i'}</span><span>${msg}</span>`;
+  document.body.appendChild(n);
+  setTimeout(() => { n.style.opacity='0'; n.style.transition='opacity .3s'; setTimeout(()=>n.remove(),300); }, 3500);
+}
+
+function renderArticleLinks(a) {
+  let h = '<div class="article-links">';
+  if (a.url) h += `<a class="article-link" href="${esc(a.url)}" target="_blank">Accéder</a>`;
+  if (a.doi) h += `<a class="article-link" href="https://doi.org/${esc(a.doi)}" target="_blank">DOI</a>`;
+  if (!a.url && !a.doi && a.title) h += `<a class="article-link" href="https://scholar.google.com/scholar?q=${encodeURIComponent(a.title)}" target="_blank">Google Scholar</a>`;
+  return h + '</div>';
+}
+
+// ============================================================
+// REFRESH & RENDER
+// ============================================================
+async function refreshArticles() { allArticles = await dbGetAll('articles'); updateBadges(); }
+function updateBadges() {
+  document.getElementById('badge-import').textContent = allArticles.filter(a=>a.status!==STATUS.DUPLICATE).length;
+  document.getElementById('badge-screen1').textContent = allArticles.filter(a=>a.status===STATUS.SCREEN1_PENDING).length;
+  document.getElementById('badge-screen2').textContent = allArticles.filter(a=>a.status===STATUS.SCREEN2_PENDING).length;
+  const upd = document.getElementById('badge-update');
+  if(upd) upd.textContent = allArticles.filter(a=>(a.searchWave||0)>0).length || '';
+}
+async function renderPage() {
+  await refreshArticles(); const c = document.getElementById('main-content');
+  switch(currentPage) {
+    case 'dashboard': c.innerHTML = renderDashboard(); break;
+    case 'step1': c.innerHTML = await renderStep1(); break;
+    case 'step2': c.innerHTML = await renderStep2(); break;
+    case 'step3': c.innerHTML = await renderStep3(); break;
+    case 'step4': c.innerHTML = await renderStep4(); break;
+    case 'step5': c.innerHTML = await renderScreeningPage(1); break;
+    case 'step6': c.innerHTML = await renderScreeningPage(2); break;
+    case 'step7': c.innerHTML = await renderStep7(); break;
+    case 'step8': c.innerHTML = await renderStep8(); break;
+    case 'step9': c.innerHTML = await renderStep9(); break;
+    case 'update': c.innerHTML = await renderUpdatePage(); break;
+    case 'export': c.innerHTML = renderExport(); break;
+  }
+}
+
+// ============================================================
+// DASHBOARD
+// ============================================================
+function renderDashboard() {
+  const t=allArticles.length, d=allArticles.filter(a=>a.status===STATUS.DUPLICATE).length, u=t-d;
+  const s1=allArticles.filter(a=>[STATUS.SCREEN1_INCLUDED,STATUS.SCREEN2_PENDING,STATUS.SCREEN2_INCLUDED,STATUS.SCREEN2_EXCLUDED,STATUS.QUALITY_PENDING,STATUS.QUALITY_DONE,STATUS.EXTRACTION_DONE,STATUS.FINAL].includes(a.status)).length;
+  const s2=allArticles.filter(a=>[STATUS.SCREEN2_INCLUDED,STATUS.QUALITY_PENDING,STATUS.QUALITY_DONE,STATUS.EXTRACTION_DONE,STATUS.FINAL].includes(a.status)).length;
+  const f=allArticles.filter(a=>a.status===STATUS.FINAL||a.status===STATUS.EXTRACTION_DONE).length;
+  const pct = u>0 ? Math.round((allArticles.filter(a=>a.status!==STATUS.IMPORTED&&a.status!==STATUS.DUPLICATE&&a.status!==STATUS.SCREEN1_PENDING).length/u)*100) : 0;
+  return `
+    <div class="stat-grid">
+      <div class="stat-card"><div class="stat-value">${t}</div><div class="stat-label">Importées</div></div>
+      <div class="stat-card"><div class="stat-value">${d}</div><div class="stat-label">Doublons</div></div>
+      <div class="stat-card"><div class="stat-value">${u}</div><div class="stat-label">Uniques</div></div>
+      <div class="stat-card"><div class="stat-value">${s1}</div><div class="stat-label">Inclus S1</div></div>
+      <div class="stat-card"><div class="stat-value">${s2}</div><div class="stat-label">Inclus S2</div></div>
+      <div class="stat-card"><div class="stat-value">${f}</div><div class="stat-label">Finaux</div></div>
+    </div>
+    <div class="card"><h3>Progression globale</h3>
+      <div style="display:flex;justify-content:space-between;margin-bottom:8px"><span style="font-size:13px;color:var(--gray-500)">Screening</span><span style="font-size:13px;font-weight:700;color:var(--primary)">${pct}%</span></div>
+      <div class="progress-bar"><div class="progress-bar-fill" style="width:${pct}%"></div></div>
+    </div>
+    <div class="card"><h3>Étapes de la revue</h3>
+      <ol style="font-size:13px;color:var(--gray-600);padding-left:18px;line-height:2.2">
+        <li><strong>Question de recherche</strong> — Structurer la question</li>
+        <li><strong>Protocole</strong> — Critères d'inclusion et champs d'extraction</li>
+        <li><strong>Recherche documentaire</strong> — Bases de données et équations</li>
+        <li><strong>Import & Dédoublonnage</strong> — BibTeX, RIS, CSV</li>
+        <li><strong>Screening Titre/Abstract</strong> — Premier tri par critères</li>
+        <li><strong>Screening Texte intégral</strong> — Lecture approfondie</li>
+        <li><strong>Évaluation qualité</strong> — Grilles standard ou personnalisées</li>
+        <li><strong>Extraction</strong> — Données structurées par article</li>
+        <li><strong>Synthèse & PRISMA</strong> — Diagramme de flux et synthèse</li>
+      </ol>
+    </div>`;
+}
+
+// ============================================================
+// STEP 1: Research Question
+// ============================================================
+async function renderStep1() {
+  const q = await getConfig('research_question', { dimensions: [], full: '', objectives: '' });
+  if (!q.dimensions) { q.dimensions = []; }
+  const blocks = q.dimensions.map((dim,i) => `
+    <div class="dimension-block">
+      <h4><input type="text" value="${esc(dim.name)}" onchange="updateDimName(${i},this.value)" style="border:none;background:transparent;font-size:13px;font-weight:600;padding:0;width:200px;color:var(--gray-800)">
+        <span class="remove-dim" onclick="removeDimension(${i})">×</span></h4>
+      <textarea onchange="updateDimValue(${i},this.value)" rows="2" style="width:100%;padding:8px 12px;border:1px solid var(--gray-300);border-radius:8px;font-size:13px;font-family:inherit;resize:vertical" placeholder="Description...">${esc(dim.value||'')}</textarea>
+    </div>`).join('');
+  return `
+    <div class="card"><h3>Définir la question de recherche</h3>
+      <p class="desc">Ajoutez librement les dimensions qui structurent votre question. Les champs sont entièrement personnalisables.</p>
+      <div>${blocks}</div>
+      <div style="display:flex;gap:8px;margin:12px 0">
+        <input type="text" id="new-dim-name" placeholder="Nom de la dimension..." style="flex:1;padding:8px 12px;border:1px solid var(--gray-300);border-radius:8px;font-size:13px" onkeydown="if(event.key==='Enter')addDimension()">
+        <button class="btn btn-primary btn-sm" onclick="addDimension()">+ Ajouter</button>
+      </div>
+    </div>
+    <div class="card"><h3>Question formulée</h3>
+      <div class="form-group"><textarea id="rq-full" rows="4" placeholder="Votre question de recherche...">${esc(q.full||'')}</textarea></div>
+      <div class="form-group"><label>Objectifs spécifiques</label><textarea id="rq-objectives" rows="3" placeholder="Objectifs de la revue...">${esc(q.objectives||'')}</textarea></div>
+      <button class="btn btn-primary" onclick="saveStep1()">Sauvegarder</button>
+    </div>`;
+}
+async function addDimension(){const n=document.getElementById('new-dim-name');const v=n.value.trim();if(!v)return;const q=await getConfig('research_question',{dimensions:[]});q.dimensions.push({name:v,value:''});await setConfig('research_question',q);n.value='';renderPage();}
+async function removeDimension(i){const q=await getConfig('research_question',{dimensions:[]});q.dimensions.splice(i,1);await setConfig('research_question',q);renderPage();}
+async function updateDimName(i,v){const q=await getConfig('research_question',{dimensions:[]});if(q.dimensions[i])q.dimensions[i].name=v;await setConfig('research_question',q);}
+async function updateDimValue(i,v){const q=await getConfig('research_question',{dimensions:[]});if(q.dimensions[i])q.dimensions[i].value=v;await setConfig('research_question',q);}
+async function saveStep1(){const q=await getConfig('research_question',{dimensions:[]});q.full=document.getElementById('rq-full').value;q.objectives=document.getElementById('rq-objectives').value;await setConfig('research_question',q);toast('Question de recherche sauvegardée');}
+
+// ============================================================
+// STEP 2: Protocol
+// ============================================================
+async function renderStep2() {
+  const proto = await getConfig('protocol', { criteriaScreen1:[], criteriaScreen2:[], extractionFields:[], keywords:'' });
+  if (proto.inclusion && !proto.criteriaScreen1) { proto.criteriaScreen1 = proto.inclusion; proto.criteriaScreen2 = proto.inclusion; delete proto.inclusion; await setConfig('protocol', proto); }
+  if (!proto.criteriaScreen1) proto.criteriaScreen1 = [];
+  if (!proto.criteriaScreen2) proto.criteriaScreen2 = [];
+  const defaultExtFields = ['Objectif','Méthodologie','Participants','Contexte','Résultats principaux','Limites'];
+  if (!proto.extractionFields || proto.extractionFields.length === 0) proto.extractionFields = defaultExtFields;
+
+  // Check if screening has started (any article past IMPORTED/DUPLICATE for S1, past S1_PENDING for S2)
+  const s1Started = allArticles.some(a=>[STATUS.SCREEN1_INCLUDED,STATUS.SCREEN1_EXCLUDED,STATUS.SCREEN2_PENDING,STATUS.SCREEN2_INCLUDED,STATUS.SCREEN2_EXCLUDED,STATUS.QUALITY_PENDING,STATUS.QUALITY_DONE,STATUS.EXTRACTION_DONE,STATUS.FINAL].includes(a.status));
+  const s2Started = allArticles.some(a=>[STATUS.SCREEN2_INCLUDED,STATUS.SCREEN2_EXCLUDED,STATUS.QUALITY_PENDING,STATUS.QUALITY_DONE,STATUS.EXTRACTION_DONE,STATUS.FINAL].includes(a.status));
+
+  function renderCritList(arr, level) {
+    const locked = level===1?s1Started:s2Started;
+    return arr.map((c,i) => `<div class="criteria-item"><span>${esc(c)}</span>${locked?'':'<span class="remove-btn" onclick="removeCriterion('+level+','+i+')">×</span>'}</div>`).join('') || '<p style="color:var(--gray-400);font-size:13px">Aucun critère défini</p>';
+  }
+
+  const s1LockHtml = s1Started
+    ? `<div class="lock-indicator locked" style="margin-bottom:12px">Verrouillé — le screening a commencé. Pour modifier, réinitialisez le screening.</div>`
+    : `<div class="lock-indicator unlocked" style="margin-bottom:12px">Modifiable — aucun article n'a encore été évalué</div>`;
+  const s2LockHtml = s2Started
+    ? `<div class="lock-indicator locked" style="margin-bottom:12px">Verrouillé — le screening 2 a commencé.</div>`
+    : `<div class="lock-indicator unlocked" style="margin-bottom:12px">Modifiable</div>`;
+
+  return `
+    <div class="card">
+      <h3>Critères d'inclusion — Screening Titre / Abstract</h3>
+      <p class="desc">Ces critères seront évalués (Oui / Non / Je ne sais pas) pour chaque article. Un seul « Non » exclut l'article. Les raisons d'exclusion sont automatiquement reportées dans le diagramme PRISMA.</p>
+      ${s1LockHtml}
+      <div class="criteria-list">${renderCritList(proto.criteriaScreen1, 1)}</div>
+      ${!s1Started?`<div style="display:flex;gap:8px;margin-top:12px">
+        <input type="text" id="new-crit-1" placeholder="Ajouter un critère..." style="flex:1;padding:8px 12px;border:1px solid var(--gray-300);border-radius:8px;font-size:13px" onkeydown="if(event.key==='Enter')addCriterion(1)">
+        <button class="btn btn-primary btn-sm" onclick="addCriterion(1)">+ Ajouter</button>
+      </div>`:''}
+    </div>
+    <div class="card">
+      <h3>Critères d'inclusion — Screening Texte intégral</h3>
+      <p class="desc">Critères appliqués lors de la lecture complète. Ils peuvent être différents ou complémentaires au premier screening.</p>
+      ${s2LockHtml}
+      <div class="criteria-list">${renderCritList(proto.criteriaScreen2, 2)}</div>
+      ${!s2Started?`<div style="display:flex;gap:8px;margin-top:12px">
+        <input type="text" id="new-crit-2" placeholder="Ajouter un critère..." style="flex:1;padding:8px 12px;border:1px solid var(--gray-300);border-radius:8px;font-size:13px" onkeydown="if(event.key==='Enter')addCriterion(2)">
+        <button class="btn btn-primary btn-sm" onclick="addCriterion(2)">+ Ajouter</button>
+      </div>
+      <div style="margin-top:12px">
+        <button class="btn btn-secondary btn-sm" onclick="copyScreen1ToScreen2()">Copier les critères du screening 1</button>
+      </div>`:''}
+    </div>
+    <div class="card">
+      <h3>Champs d'extraction</h3>
+      <p class="desc">Champs à remplir pour chaque article lors de l'extraction. Les métadonnées (auteurs, année, revue, DOI) sont pré-remplies automatiquement.</p>
+      <div class="criteria-list">${proto.extractionFields.map((f,i)=>`<div class="criteria-item"><span>${esc(f)}</span><span class="remove-btn" onclick="removeExtractionField(${i})">×</span></div>`).join('')}</div>
+      <div style="display:flex;gap:8px;margin-top:12px">
+        <input type="text" id="new-ext-field" placeholder="Nom du champ..." style="flex:1;padding:8px 12px;border:1px solid var(--gray-300);border-radius:8px;font-size:13px" onkeydown="if(event.key==='Enter')addExtractionField()">
+        <button class="btn btn-primary btn-sm" onclick="addExtractionField()">+ Ajouter</button>
+      </div>
+    </div>
+    <div class="card"><h3>Stratégie de recherche</h3>
+      <div class="form-group"><label>Mots-clés (opérateurs booléens)</label><textarea id="proto-keywords" rows="3" placeholder='"pédagogie différenciée" OR "differentiated instruction"'>${esc(proto.keywords||'')}</textarea></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+        <div class="form-group"><label>Période</label><input type="text" id="proto-period" value="${esc(proto.period||'')}" placeholder="2010-2026"></div>
+        <div class="form-group"><label>Langues</label><input type="text" id="proto-languages" value="${esc(proto.languages||'')}" placeholder="Français, Anglais"></div>
+      </div>
+      <div class="form-group"><label>Types d'études</label><input type="text" id="proto-studytypes" value="${esc(proto.studyTypes||'')}" placeholder="Expérimentales, quasi-expérimentales, études de cas..."></div>
+      <button class="btn btn-primary" onclick="saveProtocol()">Sauvegarder</button>
+    </div>`;
+}
+async function addCriterion(level){
+  const input = document.getElementById(`new-crit-${level}`);
+  const v = input.value.trim(); if(!v) return;
+  const p = await getConfig('protocol',{criteriaScreen1:[],criteriaScreen2:[]});
+  const key = level===1?'criteriaScreen1':'criteriaScreen2';
+  if(!p[key]) p[key]=[];
+  p[key].push(v); await setConfig('protocol',p); input.value=''; renderPage();
+}
+async function removeCriterion(level,i){
+  const p = await getConfig('protocol',{criteriaScreen1:[],criteriaScreen2:[]});
+  const key = level===1?'criteriaScreen1':'criteriaScreen2';
+  p[key].splice(i,1); await setConfig('protocol',p); renderPage();
+}
+async function copyScreen1ToScreen2(){
+  const p = await getConfig('protocol',{criteriaScreen1:[],criteriaScreen2:[]});
+  p.criteriaScreen2 = [...(p.criteriaScreen1||[])];
+  await setConfig('protocol',p); toast('Critères copiés'); renderPage();
+}
+async function saveProtocol(){
+  const p = await getConfig('protocol',{criteriaScreen1:[],criteriaScreen2:[],extractionFields:[]});
+  p.keywords=document.getElementById('proto-keywords').value;
+  p.period=document.getElementById('proto-period').value;
+  p.languages=document.getElementById('proto-languages').value;
+  p.studyTypes=document.getElementById('proto-studytypes').value;
+  await setConfig('protocol',p); toast('Protocole sauvegardé');
+}
+async function addExtractionField(){
+  const input = document.getElementById('new-ext-field');
+  const v = input.value.trim(); if(!v) return;
+  const p = await getConfig('protocol',{extractionFields:[]});
+  if(!p.extractionFields) p.extractionFields=[];
+  p.extractionFields.push(v); await setConfig('protocol',p); input.value=''; renderPage();
+}
+async function removeExtractionField(i){
+  const p = await getConfig('protocol',{extractionFields:[]});
+  if(!p.extractionFields) return;
+  p.extractionFields.splice(i,1); await setConfig('protocol',p); renderPage();
+}
+
+// ============================================================
+// STEP 3: Search Documentation
+// ============================================================
+async function renderStep3(){
+  const searches = await getConfig('searches',[]);
+  const rows = searches.map((s,i)=>`<tr><td>${esc(s.database)}</td><td><code style="font-size:11px;background:var(--gray-100);padding:2px 6px;border-radius:4px">${esc(s.equation)}</code></td><td>${s.date}</td><td>${s.results}</td><td><span style="cursor:pointer;color:var(--danger);font-size:13px" onclick="removeSearch(${i})">×</span></td></tr>`).join('');
+  return `
+    <div class="card"><h3>Documenter les recherches</h3>
+      <p class="desc">Chaque recherche documentée garantit la reproductibilité de la revue.</p>
+      <div style="display:grid;grid-template-columns:1fr 2fr auto auto auto;gap:8px;align-items:end;margin-bottom:16px">
+        <div class="form-group" style="margin:0"><label>Base</label><select id="search-db"><option>ERIC</option><option>PubMed</option><option>Scopus</option><option>Web of Science</option><option>PsycINFO</option><option>Google Scholar</option><option>HAL</option><option>CAIRN</option><option>OpenEdition</option><option>Persée</option><option>Autre</option></select></div>
+        <div class="form-group" style="margin:0"><label>Équation</label><input type="text" id="search-eq"></div>
+        <div class="form-group" style="margin:0"><label>Date</label><input type="date" id="search-date" value="${new Date().toISOString().split('T')[0]}"></div>
+        <div class="form-group" style="margin:0"><label>N</label><input type="number" id="search-results" placeholder="0" style="width:70px"></div>
+        <button class="btn btn-primary" style="height:38px" onclick="addSearch()">+</button>
+      </div>
+      ${searches.length?`<table><thead><tr><th>Base</th><th>Équation</th><th>Date</th><th>N</th><th></th></tr></thead><tbody>${rows}</tbody></table>`:
+      '<div class="empty-state"><div class="empty-icon">—</div><p>Aucune recherche documentée</p></div>'}
+    </div>`;
+}
+async function addSearch(){const s=await getConfig('searches',[]);s.push({database:document.getElementById('search-db').value,equation:document.getElementById('search-eq').value,date:document.getElementById('search-date').value,results:document.getElementById('search-results').value||'0'});await setConfig('searches',s);renderPage();}
+async function removeSearch(i){const s=await getConfig('searches',[]);s.splice(i,1);await setConfig('searches',s);renderPage();}
+
+// ============================================================
+// STEP 4: Import & Deduplication
+// ============================================================
+async function renderStep4(){
+  const t=allArticles.length,d=allArticles.filter(a=>a.status===STATUS.DUPLICATE).length,u=t-d;
+  const pendingDups = await getConfig('pendingDuplicates',[]);
+  let dupReviewHtml = '';
+  if (pendingDups.length>0) {
+    const groups = [];
+    for (const pd of pendingDups) {
+      const artA = allArticles.find(x=>x.id===pd.aId);
+      const artB = allArticles.find(x=>x.id===pd.bId);
+      if (artA && artB && artB.status!==STATUS.DUPLICATE) groups.push({...pd, artA, artB});
+    }
+    if (groups.length>0) {
+      dupReviewHtml = `<div class="card"><h3>Doublons potentiels à vérifier (${groups.length})</h3>
+        <p class="desc">Ces paires ont des titres très similaires. Vérifiez manuellement s'il s'agit de doublons.</p>
+        ${groups.map(g => `
+        <div class="dup-group">
+          <div class="dup-group-header"><span class="dup-label">Similarité : ${g.similarity}%</span></div>
+          <div class="dup-pair">
+            <div class="dup-card">
+              <h5>${esc(g.artA.title||'Sans titre')}</h5>
+              <div class="dup-meta">${esc(g.artA.authors||'?')} — ${g.artA.year||'?'}</div>
+              <div class="dup-meta">${esc(g.artA.journal||'')}</div>
+              ${g.artA.doi?`<div class="dup-meta">DOI: ${esc(g.artA.doi)}</div>`:''}
+              <div class="dup-source">Source : ${esc(g.artA.source||'?')}</div>
+            </div>
+            <div class="dup-card">
+              <h5>${esc(g.artB.title||'Sans titre')}</h5>
+              <div class="dup-meta">${esc(g.artB.authors||'?')} — ${g.artB.year||'?'}</div>
+              <div class="dup-meta">${esc(g.artB.journal||'')}</div>
+              ${g.artB.doi?`<div class="dup-meta">DOI: ${esc(g.artB.doi)}</div>`:''}
+              <div class="dup-source">Source : ${esc(g.artB.source||'?')}</div>
+            </div>
+          </div>
+          <div class="dup-actions">
+            <button class="btn btn-secondary btn-sm" onclick="rejectDuplicate(${g.aId},${g.bId})">Pas un doublon</button>
+            <button class="btn btn-danger btn-sm" onclick="confirmDuplicate(${g.aId},${g.bId})">Supprimer le 2e</button>
+            <button class="btn btn-danger btn-sm" onclick="confirmDuplicate(${g.bId},${g.aId})">Supprimer le 1er</button>
+          </div>
+        </div>`).join('')}
+      </div>`;
+    }
+  }
+  return `
+    <div class="stat-grid">
+      <div class="stat-card"><div class="stat-value">${t}</div><div class="stat-label">Importées</div></div>
+      <div class="stat-card"><div class="stat-value">${d}</div><div class="stat-label">Doublons</div></div>
+      <div class="stat-card"><div class="stat-value">${u}</div><div class="stat-label">Uniques</div></div>
+    </div>
+    <div class="card"><h3>Importer des références</h3><p class="desc">Formats acceptés : BibTeX (.bib), RIS (.ris), CSV (.csv). Pour une mise à jour de recherche après un délai, utilisez l'onglet <a href="#" onclick="document.querySelector('[data-page=update]').click();return false" style="color:var(--primary);font-weight:600">Mise à jour</a>.</p>
+      <div class="btn-group">
+        <label class="btn btn-primary" style="cursor:pointer">Importer un fichier<input type="file" accept=".bib,.ris,.csv,.txt" multiple class="hidden" onchange="handleFileImport(event)"></label>
+        <button class="btn btn-secondary" onclick="showManualAdd()">Ajout manuel</button>
+      </div>
+    </div>
+    <div class="card"><h3>Dédoublonnage</h3>
+      <p class="desc">Détection par correspondance DOI, titre exact, et similarité de titre (>85%). Les doublons exacts sont supprimés automatiquement ; les doublons potentiels sont présentés pour vérification manuelle.</p>
+      <div class="btn-group">
+        <button class="btn btn-primary" onclick="runDeduplication()">Détecter les doublons</button>
+        <button class="btn btn-success" onclick="promoteToScreening()">Envoyer au Screening 1</button>
+      </div>
+    </div>
+    ${dupReviewHtml}
+    <div class="card"><h3>Références importées</h3>${renderArticleTable(allArticles.filter(a=>a.status!==STATUS.DUPLICATE).slice(0,50),true)}
+      ${t>50?`<p style="font-size:12px;color:var(--gray-400);margin-top:12px;text-align:center">50 premières sur ${u}</p>`:''}
+    </div>`;
+}
+function renderArticleTable(articles,showDel=false){
+  if(!articles.length) return '<div class="empty-state"><div class="empty-icon">—</div><p>Aucun article</p></div>';
+  return `<table><thead><tr><th style="width:40%">Titre</th><th>Auteurs</th><th>Année</th><th>Statut</th>${showDel?'<th></th>':''}</tr></thead>
+    <tbody>${articles.map(a=>`<tr><td style="font-weight:600;cursor:pointer;color:var(--gray-800)" onclick="showArticleDetail(${a.id})">${esc(a.title||'Sans titre')}</td><td style="font-size:12px;color:var(--gray-500)">${esc(truncate(a.authors||'',35))}</td><td>${a.year||'—'}</td><td>${statusTag(a.status)}</td>${showDel?`<td><span style="cursor:pointer;color:var(--gray-400);font-size:13px" onclick="deleteArticle(${a.id})">×</span></td>`:''}</tr>`).join('')}</tbody></table>`;
+}
+
+// Import parsers
+async function handleFileImport(event){
+  const files=event.target.files;let count=0;
+  for(const file of files){
+    const text=await file.text();const ext=file.name.split('.').pop().toLowerCase();let arts=[];
+    if(ext==='bib')arts=parseBibtex(text);else if(ext==='ris')arts=parseRIS(text);else if(ext==='csv')arts=parseCSV(text);else{toast('Format non supporté','error');continue;}
+    for(const a of arts){a.status=STATUS.IMPORTED;a.source=file.name;a.sourceType='database';a.searchWave=0;a.importDate=new Date().toISOString();a.notes='';a.qualityScore=null;a.exclusionReason='';a.criteriaAnswers={};a.qualityGrid=null;a.qualityCriteriaResults={};await dbPut('articles',a);count++;}
+  }
+  toast(`${count} référence(s) importée(s)`);event.target.value='';renderPage();
+}
+function parseBibtex(text){const a=[];const e=text.split(/(?=@\w+\{)/);for(const en of e){if(!en.trim())continue;const r={};const g=(n)=>{for(const p of[new RegExp(n+'\\s*=\\s*\\{([^}]*)\\}','i'),new RegExp(n+'\\s*=\\s*"([^"]*)"','i'),new RegExp(n+'\\s*=\\s*(\\d+)','i')]){const m=en.match(p);if(m)return m[1].trim();}return'';};r.title=g('title');r.authors=g('author').replace(/ and /g,', ');r.year=g('year');r.journal=g('journal')||g('booktitle');r.doi=g('doi');r.abstract=g('abstract');r.volume=g('volume');r.pages=g('pages');r.keywords=g('keywords');r.url=g('url');if(r.title||r.authors)a.push(r);}return a;}
+function parseRIS(text){const a=[];const e=text.split(/\nER\s*-/);for(const en of e){if(!en.trim())continue;const r={};const l=en.split('\n');const ap=[];for(const ln of l){const m=ln.match(/^([A-Z][A-Z0-9])\s*-\s*(.*)/);if(!m)continue;const[,t,v]=m;const val=v.trim();switch(t){case'TI':case'T1':r.title=(r.title||'')+' '+val;break;case'AU':case'A1':ap.push(val);break;case'PY':case'Y1':r.year=val.substring(0,4);break;case'JO':case'JF':case'T2':r.journal=val;break;case'DO':r.doi=val;break;case'AB':case'N2':r.abstract=(r.abstract||'')+' '+val;break;case'VL':r.volume=val;break;case'SP':r.pages=val;break;case'KW':r.keywords=(r.keywords||'')+'; '+val;break;case'UR':r.url=val;break;}}r.authors=ap.join(', ');if(r.title){r.title=r.title.trim();a.push(r);}}return a;}
+function parseCSV(text){const a=[];const l=text.split('\n');if(l.length<2)return a;const sep=l[0].includes('\t')?'\t':',';const h=parseCSVLine(l[0],sep).map(x=>x.toLowerCase().trim());for(let i=1;i<l.length;i++){if(!l[i].trim())continue;const v=parseCSVLine(l[i],sep);const r={};h.forEach((hd,j)=>{const val=(v[j]||'').trim();if(hd.includes('title')||hd.includes('titre'))r.title=val;else if(hd.includes('author')||hd.includes('auteur'))r.authors=val;else if(hd.includes('year')||hd.includes('année')||hd.includes('date'))r.year=val.substring(0,4);else if(hd.includes('journal')||hd.includes('revue')||hd.includes('source'))r.journal=val;else if(hd.includes('doi'))r.doi=val;else if(hd.includes('abstract')||hd.includes('résum'))r.abstract=val;else if(hd.includes('keyword')||hd.includes('mot'))r.keywords=val;else if(hd.includes('url')||hd.includes('lien'))r.url=val;});if(r.title)a.push(r);}return a;}
+function parseCSVLine(l,s){const r=[];let c='';let q=false;for(const ch of l){if(ch==='"')q=!q;else if(ch===s&&!q){r.push(c);c='';}else c+=ch;}r.push(c);return r;}
+
+// Dedup helpers
+function normalizeTitle(t) { return (t||'').toLowerCase().replace(/[^a-z0-9àâäéèêëïîôùûüÿçœæ]/g,''); }
+function titleSimilarity(a,b) {
+  // Dice coefficient on bigrams for fuzzy matching
+  if (!a||!b) return 0;
+  const na = normalizeTitle(a), nb = normalizeTitle(b);
+  if (na===nb) return 1;
+  if (na.length<2||nb.length<2) return 0;
+  const bigrams = s => { const b=new Map(); for(let i=0;i<s.length-1;i++){const p=s.substring(i,i+2);b.set(p,(b.get(p)||0)+1);} return b; };
+  const ba=bigrams(na),bb=bigrams(nb);
+  let inter=0;
+  ba.forEach((v,k)=>{ if(bb.has(k)) inter+=Math.min(v,bb.get(k)); });
+  let totA=0,totB=0; ba.forEach(v=>totA+=v); bb.forEach(v=>totB+=v);
+  return totA+totB>0 ? (2*inter)/(totA+totB) : 0;
+}
+
+// Run dedup: exact DOI match + fuzzy title (>0.85 similarity)
+async function runDeduplication(){
+  const arts = allArticles.filter(a=>a.status!==STATUS.DUPLICATE);
+  let autoCount=0; const potentialDups=[];
+  const seen = new Map(); const seenTitles = [];
+
+  for (const a of arts) {
+    let isDup = false; let dupOfId = null;
+    // 1) Exact DOI match
+    if (a.doi) {
+      const dk = a.doi.toLowerCase().trim();
+      if (seen.has('doi:'+dk)) { isDup=true; dupOfId=seen.get('doi:'+dk); }
+      else seen.set('doi:'+dk, a.id);
+    }
+    // 2) Exact normalized title
+    const nt = normalizeTitle(a.title);
+    if (!isDup && nt.length>10) {
+      if (seen.has('t:'+nt)) { isDup=true; dupOfId=seen.get('t:'+nt); }
+      else seen.set('t:'+nt, a.id);
+    }
+    if (isDup) { a.status=STATUS.DUPLICATE; a.duplicateOf=dupOfId; await dbPut('articles',a); autoCount++; continue; }
+    // 3) Fuzzy title match — flag as potential duplicate for review
+    for (const prev of seenTitles) {
+      const sim = titleSimilarity(a.title, prev.title);
+      if (sim>0.85 && sim<1) { potentialDups.push({a:prev, b:a, similarity:Math.round(sim*100)}); break; }
+    }
+    seenTitles.push(a);
+  }
+  await setConfig('pendingDuplicates', potentialDups.map(d=>({aId:d.a.id,bId:d.b.id,similarity:d.similarity})));
+  toast(`${autoCount} doublon(s) exact(s). ${potentialDups.length} doublon(s) potentiel(s) à vérifier.`);
+  renderPage();
+}
+
+async function confirmDuplicate(keepId, removeId) {
+  const a = await dbGet('articles', removeId);
+  a.status = STATUS.DUPLICATE; a.duplicateOf = keepId;
+  await dbPut('articles', a);
+  // Remove from pending list
+  let pend = await getConfig('pendingDuplicates',[]);
+  pend = pend.filter(p => !(p.aId===keepId&&p.bId===removeId) && !(p.aId===removeId&&p.bId===keepId));
+  await setConfig('pendingDuplicates', pend);
+  toast('Doublon confirmé'); renderPage();
+}
+async function rejectDuplicate(aId, bId) {
+  let pend = await getConfig('pendingDuplicates',[]);
+  pend = pend.filter(p => !(p.aId===aId&&p.bId===bId));
+  await setConfig('pendingDuplicates', pend);
+  toast('Pas un doublon — conservé'); renderPage();
+}
+
+async function promoteToScreening(){const arts=allArticles.filter(a=>a.status===STATUS.IMPORTED);for(const a of arts){a.status=STATUS.SCREEN1_PENDING;await dbPut('articles',a);}toast(`${arts.length} article(s) envoyé(s) au screening`);renderPage();}
+function showManualAdd(){showModal(`<h3>Ajout manuel</h3>
+  <div class="form-group"><label>Méthode d'identification</label>
+    <select id="man-method"><option value="database">Recherche en base de données</option><option value="snowballing">Snowballing (références d'articles inclus)</option><option value="hand_search">Recherche manuelle</option><option value="grey_lit">Littérature grise</option><option value="expert">Recommandation d'expert</option><option value="other">Autre</option></select>
+  </div>
+  <div class="form-group"><label>Titre *</label><input type="text" id="man-title"></div><div class="form-group"><label>Auteurs</label><input type="text" id="man-authors"></div><div class="form-group"><label>Année</label><input type="text" id="man-year"></div><div class="form-group"><label>Revue</label><input type="text" id="man-journal"></div><div class="form-group"><label>DOI</label><input type="text" id="man-doi"></div><div class="form-group"><label>Résumé</label><textarea id="man-abstract" rows="3"></textarea></div><div class="form-group"><label>URL</label><input type="text" id="man-url"></div><div class="modal-actions"><button class="btn btn-secondary" onclick="closeModal()">Annuler</button><button class="btn btn-primary" onclick="saveManualArticle()">Ajouter</button></div>`);}
+async function saveManualArticle(){const t=document.getElementById('man-title').value.trim();if(!t){toast('Titre obligatoire','error');return;}
+  const method=document.getElementById('man-method').value;
+  const isOther=method!=='database';
+  const methodLabels={database:'Base de données',snowballing:'Snowballing',hand_search:'Recherche manuelle',grey_lit:'Littérature grise',expert:'Expert',other:'Autre'};
+  await dbPut('articles',{title:t,authors:document.getElementById('man-authors').value,year:document.getElementById('man-year').value,journal:document.getElementById('man-journal').value,doi:document.getElementById('man-doi').value,abstract:document.getElementById('man-abstract').value,url:document.getElementById('man-url').value,status:STATUS.IMPORTED,source:methodLabels[method]||'Manuel',sourceType:isOther?'other':'database',sourceMethod:isOther?method:undefined,searchWave:0,importDate:new Date().toISOString(),notes:'',qualityScore:null,exclusionReason:'',criteriaAnswers:{},qualityGrid:null,qualityCriteriaResults:{}});closeModal();toast('Référence ajoutée');renderPage();}
+
+// ============================================================
+// SCREENING — UNIFIED FOR BOTH LEVELS
+// Each criterion click saves IMMEDIATELY to IndexedDB.
+// submitScreening just reads from DB — no temp objects needed.
+// ============================================================
+async function renderScreeningPage(level) {
+  const proto = await getConfig('protocol',{criteriaScreen1:[],criteriaScreen2:[]});
+  const criteria = level===1 ? (proto.criteriaScreen1||[]) : (proto.criteriaScreen2||[]);
+  const pendingSt = level===1?STATUS.SCREEN1_PENDING:STATUS.SCREEN2_PENDING;
+  const inclSt = level===1?STATUS.SCREEN1_INCLUDED:STATUS.SCREEN2_INCLUDED;
+  const exclSt = level===1?STATUS.SCREEN1_EXCLUDED:STATUS.SCREEN2_EXCLUDED;
+  const pending = allArticles.filter(a=>a.status===pendingSt);
+  const included = allArticles.filter(a=>a.status===inclSt);
+  const excluded = allArticles.filter(a=>a.status===exclSt);
+  const total = pending.length+included.length+excluded.length;
+  const done = included.length+excluded.length;
+  const pct = total>0?Math.round((done/total)*100):0;
+  const nextLabel = level===1?'Screening 2':'évaluation qualité';
+  const promoteFunc = level===1?'promoteS1toS2':'promoteToQuality';
+
+  return `
+    <div class="stat-grid">
+      <div class="stat-card"><div class="stat-value">${pending.length}</div><div class="stat-label">En attente</div></div>
+      <div class="stat-card"><div class="stat-value">${included.length}</div><div class="stat-label">Inclus</div></div>
+      <div class="stat-card"><div class="stat-value">${excluded.length}</div><div class="stat-label">Exclus</div></div>
+    </div>
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+        <h3>Progression</h3><span style="font-size:13px;font-weight:700;color:var(--primary)">${done}/${total} (${pct}%)</span>
+      </div>
+      <div class="progress-bar"><div class="progress-bar-fill" style="width:${pct}%"></div></div>
+    </div>
+    ${criteria.length===0?'<div class="card" style="border-color:var(--warning)"><p style="color:var(--warning);font-size:13px">Aucun critère défini pour ce screening. <a href="#" onclick="document.querySelector(\'[data-page=step2]\').click();return false" style="color:var(--primary);font-weight:600">Configurer dans le Protocole</a></p></div>':''}
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+        <h3>${level===1?'Articles à trier':'Lecture texte intégral'}</h3>
+        <button class="btn btn-success btn-sm" onclick="${promoteFunc}()">Envoyer les inclus au ${nextLabel}</button>
+      </div>
+      ${pending.length===0?'<div class="empty-state"><div class="empty-icon">—</div><p>Tous les articles ont été traités.</p></div>':
+      pending.slice(0,20).map(a => renderScreeningCard(a,criteria,level)).join('')+
+      (pending.length>20?`<p style="text-align:center;color:var(--gray-400);font-size:12px;margin-top:16px">${pending.length-20} autres en attente</p>`:'')}
+    </div>`;
+}
+
+function renderScreeningCard(a, criteria, level) {
+  const saved = a.criteriaAnswers || {};
+  const screenKey = level===1?'screen1':'screen2';
+  const savedForLevel = saved[screenKey] || {};
+
+  return `
+    <div class="screening-card" id="scard-${a.id}">
+      <h4>${esc(a.title||'Sans titre')}</h4>
+      <div class="authors">${esc(a.authors||'Auteurs inconnus')} — ${a.year||'?'} — ${esc(a.journal||'')}</div>
+      <div class="abstract">${esc(a.abstract||'Pas de résumé disponible')}</div>
+      ${a.keywords?`<div class="meta">Mots-clés : ${esc(a.keywords)}</div>`:''}
+      ${renderArticleLinks(a)}
+
+      ${criteria.length>0?`
+      <div class="criteria-eval">
+        <div class="criteria-eval-header">Critères d'inclusion</div>
+        ${criteria.map((c,i)=>{
+          const val = savedForLevel[c] || '';
+          return `<div class="criteria-eval-row">
+            <label>${esc(c)}</label>
+            <div class="eval-btns">
+              <button class="eval-btn ${val==='oui'?'selected-oui':''}" onclick="saveCriterion(${a.id},${level},'${escJs(c)}','oui',this)">Oui</button>
+              <button class="eval-btn ${val==='non'?'selected-non':''}" onclick="saveCriterion(${a.id},${level},'${escJs(c)}','non',this)">Non</button>
+              <button class="eval-btn ${val==='nsp'?'selected-nsp':''}" onclick="saveCriterion(${a.id},${level},'${escJs(c)}','nsp',this)">?</button>
+            </div>
+            <span class="save-indicator" id="si-${a.id}-${i}">✓</span>
+          </div>`;
+        }).join('')}
+      </div>`:''}
+
+      <div class="form-group" style="margin-top:10px">
+        <textarea id="snotes-${a.id}" rows="2" placeholder="Notes..." style="font-size:12px">${esc(a.notes||'')}</textarea>
+      </div>
+      <button class="btn btn-primary btn-sm" onclick="submitScreening(${a.id},${level})">Valider la décision</button>
+    </div>`;
+}
+
+// Escape a string for use inside a JS string literal in an onclick attribute
+function escJs(s) { return (s||'').replace(/\\/g,'\\\\').replace(/'/g,"\\'").replace(/"/g,'&quot;'); }
+
+// *** KEY FIX: Each click saves the criterion value DIRECTLY to IndexedDB ***
+async function saveCriterion(articleId, level, criterionName, value, btn) {
+  // 1. Update button styling immediately
+  const btnsContainer = btn.closest('.eval-btns');
+  btnsContainer.querySelectorAll('.eval-btn').forEach(b => b.className = 'eval-btn');
+  btn.className = `eval-btn selected-${value==='oui'?'oui':value==='non'?'non':'nsp'}`;
+
+  // 2. Save to IndexedDB immediately
+  const a = await dbGet('articles', articleId);
+  const screenKey = level===1 ? 'screen1' : 'screen2';
+  if (!a.criteriaAnswers) a.criteriaAnswers = {};
+  if (!a.criteriaAnswers[screenKey]) a.criteriaAnswers[screenKey] = {};
+  a.criteriaAnswers[screenKey][criterionName] = value;
+  await dbPut('articles', a);
+
+  // 3. Show brief save indicator
+  const indicator = btn.closest('.criteria-eval-row').querySelector('.save-indicator');
+  if (indicator) { indicator.classList.add('visible'); setTimeout(()=>indicator.classList.remove('visible'), 800); }
+}
+
+// submitScreening now just reads from the DB — all values are already persisted
+async function submitScreening(id, level) {
+  const proto = await getConfig('protocol',{criteriaScreen1:[],criteriaScreen2:[]});
+  const criteria = level===1?(proto.criteriaScreen1||[]):(proto.criteriaScreen2||[]);
+
+  // Re-read article from DB (criterion values were saved by saveCriterion)
+  const a = await dbGet('articles', id);
+  const screenKey = level===1?'screen1':'screen2';
+  const statusPrefix = level===1?'SCREEN1':'SCREEN2';
+  const answers = (a.criteriaAnswers && a.criteriaAnswers[screenKey]) || {};
+
+  // Check completeness
+  const unanswered = criteria.filter(c => !answers[c]);
+  if (criteria.length > 0 && unanswered.length > 0) {
+    toast(`${unanswered.length} critère(s) non évalué(s)`, 'error');
+    return;
+  }
+
+  // Save notes
+  const notesEl = document.getElementById(`snotes-${id}`);
+  if (notesEl) a.notes = notesEl.value;
+
+  // Decision logic
+  const failed = criteria.filter(c => answers[c] === 'non');
+  const uncertain = criteria.filter(c => answers[c] === 'nsp');
+
+  if (failed.length > 0) {
+    a.status = STATUS[statusPrefix+'_EXCLUDED'];
+    a.exclusionReason = failed.join(' ; ');
+    a.exclusionCriteriaHit = failed;
+    toast(`Exclu — critère(s) non rempli(s) : ${failed.map(f=>'"'+f+'"').join(', ')}`, 'excluded');
+  } else if (uncertain.length > 0) {
+    a.status = STATUS[statusPrefix+'_INCLUDED'];
+    a.inclusionCriteriaMet = criteria.filter(c => answers[c] === 'oui');
+    toast(`Inclus avec ${uncertain.length} incertitude(s)`, 'uncertain');
+  } else {
+    a.status = STATUS[statusPrefix+'_INCLUDED'];
+    a.inclusionCriteriaMet = criteria;
+    toast('Inclus — tous les critères remplis', 'included');
+  }
+
+  a.screenDate = new Date().toISOString();
+  await dbPut('articles', a);
+  renderPage();
+}
+
+// ============================================================
+// UPDATE SEARCH (Mise à jour de recherche)
+// ============================================================
+async function renderUpdatePage() {
+  const waves = await getConfig('searchWaves', []);
+  const waveArts = w => allArticles.filter(a=>(a.searchWave||0)===w);
+
+  return `
+    <div class="card">
+      <h3>Mise à jour de la recherche</h3>
+      <p class="desc">Après un délai (ex. 1 an), relancez vos équations de recherche et importez les nouveaux résultats ici. Chaque mise à jour suit le même pipeline (dédoublonnage → screening → qualité → extraction) et apparaît comme une colonne séparée dans le diagramme PRISMA.</p>
+      <button class="btn btn-primary" onclick="createSearchWave()">Créer une mise à jour</button>
+    </div>
+    ${waves.map((w,i) => {
+      const wn = i+1;
+      const arts = waveArts(wn);
+      const imported = arts.filter(a=>a.status===STATUS.IMPORTED).length;
+      const dups = arts.filter(a=>a.status===STATUS.DUPLICATE).length;
+      const unique = arts.length - dups;
+      const s1p = arts.filter(a=>a.status===STATUS.SCREEN1_PENDING).length;
+      const s1i = arts.filter(a=>[STATUS.SCREEN1_INCLUDED,STATUS.SCREEN2_PENDING,STATUS.SCREEN2_INCLUDED,STATUS.SCREEN2_EXCLUDED,STATUS.QUALITY_PENDING,STATUS.QUALITY_DONE,STATUS.EXTRACTION_DONE,STATUS.FINAL].includes(a.status)).length;
+      const s2i = arts.filter(a=>[STATUS.SCREEN2_INCLUDED,STATUS.QUALITY_PENDING,STATUS.QUALITY_DONE,STATUS.EXTRACTION_DONE,STATUS.FINAL].includes(a.status)).length;
+      const done = arts.filter(a=>[STATUS.QUALITY_DONE,STATUS.EXTRACTION_DONE,STATUS.FINAL].includes(a.status)).length;
+      return `<div class="card">
+        <div style="display:flex;justify-content:space-between;align-items:start">
+          <div><h3>Mise à jour ${wn} — ${esc(w.label||'')}</h3>
+            <p class="desc">${esc(w.description||'')} — ${w.date||''}</p></div>
+          <span class="tag tag-blue">${arts.length} réf.</span>
+        </div>
+        <div class="stat-grid" style="margin-top:12px">
+          <div class="stat-card"><div class="stat-value">${arts.length}</div><div class="stat-label">Importées</div></div>
+          <div class="stat-card"><div class="stat-value">${dups}</div><div class="stat-label">Doublons</div></div>
+          <div class="stat-card"><div class="stat-value">${unique}</div><div class="stat-label">Uniques</div></div>
+          <div class="stat-card"><div class="stat-value">${s1i}</div><div class="stat-label">Inclus S1</div></div>
+          <div class="stat-card"><div class="stat-value">${s2i}</div><div class="stat-label">Inclus S2</div></div>
+          <div class="stat-card"><div class="stat-value">${done}</div><div class="stat-label">Finaux</div></div>
+        </div>
+        <div class="btn-group" style="margin-top:12px">
+          <label class="btn btn-primary btn-sm" style="cursor:pointer">Importer (BibTeX/RIS/CSV)<input type="file" accept=".bib,.ris,.csv,.txt" multiple class="hidden" onchange="handleUpdateImport(event,${wn})"></label>
+          <button class="btn btn-secondary btn-sm" onclick="runUpdateDedup(${wn})">Dédoublonner</button>
+          ${imported?`<button class="btn btn-success btn-sm" onclick="promoteWaveToScreening(${wn})">Envoyer au Screening 1</button>`:''}
+        </div>
+        ${arts.length?`<details style="margin-top:12px"><summary style="cursor:pointer;font-size:12px;color:var(--gray-500)">${arts.length} référence(s)</summary>
+          <div style="margin-top:8px">${renderArticleTable(arts.filter(a=>a.status!==STATUS.DUPLICATE).slice(0,30),true)}</div>
+        </details>`:''}
+      </div>`;
+    }).join('')}
+    ${!waves.length?'<div class="card"><div class="empty-state"><div class="empty-icon">—</div><p>Aucune mise à jour. Créez-en une quand vous souhaitez relancer vos recherches.</p></div></div>':''}`;
+}
+
+async function createSearchWave(){
+  showModal(`<h3>Nouvelle mise à jour de recherche</h3>
+    <p style="font-size:13px;color:var(--gray-500);margin-bottom:14px">Décrivez cette nouvelle vague de recherche. Elle sera traitée indépendamment dans le pipeline et apparaîtra dans le PRISMA.</p>
+    <div class="form-group"><label>Libellé</label><input type="text" id="wave-label" placeholder="Ex: Mise à jour 2025, Recherche élargie..."></div>
+    <div class="form-group"><label>Description</label><textarea id="wave-desc" rows="2" placeholder="Contexte : pourquoi cette mise à jour ?"></textarea></div>
+    <div class="form-group"><label>Période couverte</label><input type="text" id="wave-period" placeholder="Ex: 2024-2025"></div>
+    <div class="modal-actions"><button class="btn btn-secondary" onclick="closeModal()">Annuler</button><button class="btn btn-primary" onclick="saveSearchWave()">Créer</button></div>`);
+}
+async function saveSearchWave(){
+  const label=document.getElementById('wave-label').value.trim();if(!label){toast('Libellé requis','error');return;}
+  const waves=await getConfig('searchWaves',[]);
+  waves.push({label,description:document.getElementById('wave-desc').value,period:document.getElementById('wave-period').value,date:new Date().toISOString().split('T')[0]});
+  await setConfig('searchWaves',waves);closeModal();toast('Mise à jour créée');renderPage();
+}
+
+async function handleUpdateImport(event,waveNum){
+  const files=event.target.files;let count=0;
+  for(const file of files){
+    const text=await file.text();const ext=file.name.split('.').pop().toLowerCase();let arts=[];
+    if(ext==='bib')arts=parseBibtex(text);else if(ext==='ris')arts=parseRIS(text);else if(ext==='csv')arts=parseCSV(text);else{toast('Format non supporté','error');continue;}
+    for(const a of arts){a.status=STATUS.IMPORTED;a.source=file.name;a.sourceType='database';a.searchWave=waveNum;a.importDate=new Date().toISOString();a.notes='';a.qualityScore=null;a.exclusionReason='';a.criteriaAnswers={};a.qualityGrid=null;a.qualityCriteriaResults={};await dbPut('articles',a);count++;}
+  }
+  toast(`${count} référence(s) importée(s) dans la mise à jour`);event.target.value='';renderPage();
+}
+
+async function runUpdateDedup(waveNum){
+  // Dedup within the wave AND against all existing articles from previous waves
+  const waveArts = allArticles.filter(a=>(a.searchWave||0)===waveNum && a.status!==STATUS.DUPLICATE);
+  const existingArts = allArticles.filter(a=>(a.searchWave||0)!==waveNum && a.status!==STATUS.DUPLICATE);
+  let dc=0;
+  // Build index of existing
+  const seenDoi=new Map(), seenTitle=new Map();
+  existingArts.forEach(a=>{ if(a.doi)seenDoi.set(a.doi.toLowerCase().trim(),a.id); const nt=normalizeTitle(a.title); if(nt.length>10)seenTitle.set(nt,a.id); });
+  // Also check within the wave
+  for(const a of waveArts){
+    let isDup=false,dupOfId=null;
+    if(a.doi){const dk=a.doi.toLowerCase().trim();if(seenDoi.has(dk)){isDup=true;dupOfId=seenDoi.get(dk);}else seenDoi.set(dk,a.id);}
+    const nt=normalizeTitle(a.title);
+    if(!isDup&&nt.length>10){if(seenTitle.has(nt)){isDup=true;dupOfId=seenTitle.get(nt);}else seenTitle.set(nt,a.id);}
+    if(!isDup){for(const ex of existingArts){if(titleSimilarity(a.title,ex.title)>0.85){isDup=true;dupOfId=ex.id;break;}}}
+    if(isDup){a.status=STATUS.DUPLICATE;a.duplicateOf=dupOfId;await dbPut('articles',a);dc++;}
+  }
+  toast(`${dc} doublon(s) détecté(s) dans la mise à jour`);renderPage();
+}
+
+async function promoteWaveToScreening(waveNum){
+  const arts=allArticles.filter(a=>(a.searchWave||0)===waveNum&&a.status===STATUS.IMPORTED);
+  for(const a of arts){a.status=STATUS.SCREEN1_PENDING;await dbPut('articles',a);}
+  toast(`${arts.length} article(s) envoyé(s) au screening`);renderPage();
+}
+
+async function promoteS1toS2(){const arts=allArticles.filter(a=>a.status===STATUS.SCREEN1_INCLUDED);for(const a of arts){a.status=STATUS.SCREEN2_PENDING;await dbPut('articles',a);}toast(`${arts.length} article(s) envoyé(s) au Screening 2`);renderPage();}
+async function promoteToQuality(){const arts=allArticles.filter(a=>a.status===STATUS.SCREEN2_INCLUDED);for(const a of arts){a.status=STATUS.QUALITY_PENDING;await dbPut('articles',a);}toast(`${arts.length} article(s) envoyé(s) en évaluation qualité`);renderPage();}
+
+// ============================================================
+// STEP 7: Quality Assessment
+// ============================================================
+async function renderStep7(){
+  const qc = await getConfig('quality_config',{selectedGrid:'mmat',customCriteria:[]});
+  const pending = allArticles.filter(a=>a.status===STATUS.QUALITY_PENDING);
+  const done = allArticles.filter(a=>[STATUS.QUALITY_DONE,STATUS.EXTRACTION_DONE,STATUS.FINAL].includes(a.status));
+  const grid = QUALITY_GRIDS[qc.selectedGrid]||QUALITY_GRIDS.mmat;
+  const criteria = qc.selectedGrid==='custom'?(qc.customCriteria||[]):grid.criteria;
+  const opts = Object.entries(QUALITY_GRIDS).map(([k,g])=>`<option value="${k}" ${qc.selectedGrid===k?'selected':''}>${g.name}</option>`).join('');
+
+  return `
+    <div class="card"><h3>Grille d'évaluation</h3><p class="desc">${esc(grid.desc)}</p>
+      <div class="form-group"><label>Grille</label><select onchange="changeQGrid(this.value)">${opts}</select></div>
+      ${qc.selectedGrid==='custom'?`
+      <div class="criteria-list">${(qc.customCriteria||[]).map((c,i)=>`<div class="criteria-item"><span>${esc(c.label)}</span><span class="remove-btn" onclick="removeQCrit(${i})">×</span></div>`).join('')||'<p style="color:var(--gray-400);font-size:13px">Aucun critère</p>'}</div>
+      <div style="display:flex;gap:8px;margin-top:8px"><input type="text" id="new-qcrit" placeholder="Ajouter..." style="flex:1;padding:8px 12px;border:1px solid var(--gray-300);border-radius:8px;font-size:13px" onkeydown="if(event.key==='Enter')addQCrit()"><button class="btn btn-primary btn-sm" onclick="addQCrit()">+</button></div>
+      `:`<div class="criteria-list" style="margin-top:8px">${criteria.map(c=>`<div class="criteria-item"><span>${esc(c.label)}</span></div>`).join('')}</div>`}
+    </div>
+
+    <div class="card"><h3>Articles à évaluer (${pending.length})</h3>
+    ${!pending.length?'<div class="empty-state"><div class="empty-icon">—</div><p>Aucun article en attente</p></div>':
+    pending.map(a=>{const res=a.qualityCriteriaResults||{};return`
+      <div class="screening-card">
+        <h4>${esc(a.title)}</h4><div class="authors">${esc(a.authors||'')} — ${a.year||'?'} — ${esc(a.journal||'')}</div>
+        ${renderArticleLinks(a)}
+        ${a.abstract?`<details style="margin:8px 0"><summary style="cursor:pointer;font-size:12px;color:var(--gray-500)">Résumé</summary><div class="abstract" style="margin-top:6px">${esc(a.abstract)}</div></details>`:''}
+        <div class="quality-grid"><div class="quality-grid-header"><span>Critères</span><span style="font-size:11px;color:var(--gray-400)">${grid.name}</span></div>
+          ${criteria.map((c,i)=>`<div class="quality-grid-item"><label>${esc(c.label||c)}</label><select id="qc-${a.id}-${i}" style="width:130px"><option value="" ${!res[c.id||c.label]?'selected':''}>— —</option><option value="oui" ${res[c.id||c.label]==='oui'?'selected':''}>Oui</option><option value="partiel" ${res[c.id||c.label]==='partiel'?'selected':''}>Partiel</option><option value="non" ${res[c.id||c.label]==='non'?'selected':''}>Non</option><option value="na" ${res[c.id||c.label]==='na'?'selected':''}>N/A</option></select></div>`).join('')}
+        </div>
+        <div style="margin:12px 0"><label style="font-size:12px;font-weight:600;display:block;margin-bottom:4px">Score global</label><div class="quality-stars" id="stars-${a.id}">${[1,2,3,4,5].map(n=>`<span onclick="setQual(${a.id},${n})" class="${(a.qualityScore||0)>=n?'filled':''}">★</span>`).join('')}</div></div>
+        <div class="form-group"><label>Commentaires</label><textarea id="qnotes-${a.id}" rows="2" style="font-size:12px">${esc(a.qualityNotes||'')}</textarea></div>
+        <button class="btn btn-primary btn-sm" onclick="saveQual(${a.id})">Valider</button>
+      </div>`;}).join('')}
+    </div>
+
+    ${done.length?`<div class="card"><h3>Évalués (${done.length})</h3><table><thead><tr><th>Titre</th><th>Grille</th><th>Score</th><th>Remplis</th></tr></thead><tbody>${done.map(a=>{const r=a.qualityCriteriaResults||{};const tot=Object.keys(r).length;const ok=Object.values(r).filter(v=>v==='oui').length;return`<tr><td style="font-weight:600;cursor:pointer" onclick="showArticleDetail(${a.id})">${esc(truncate(a.title,45))}</td><td style="font-size:11px">${esc(a.qualityGrid||'')}</td><td>${'★'.repeat(a.qualityScore||0)}${'☆'.repeat(5-(a.qualityScore||0))}</td><td style="font-size:12px">${tot?ok+'/'+tot:''}</td></tr>`;}).join('')}</tbody></table></div>`:''}`;
+}
+async function changeQGrid(v){const q=await getConfig('quality_config',{selectedGrid:'mmat',customCriteria:[]});q.selectedGrid=v;await setConfig('quality_config',q);renderPage();}
+async function addQCrit(){const i=document.getElementById('new-qcrit');const v=i.value.trim();if(!v)return;const q=await getConfig('quality_config',{customCriteria:[]});q.customCriteria.push({id:'c_'+Date.now(),label:v});await setConfig('quality_config',q);i.value='';renderPage();}
+async function removeQCrit(i){const q=await getConfig('quality_config',{customCriteria:[]});q.customCriteria.splice(i,1);await setConfig('quality_config',q);renderPage();}
+async function setQual(id,score){const a=await dbGet('articles',id);a.qualityScore=score;await dbPut('articles',a);document.querySelectorAll(`#stars-${id} span`).forEach((s,i)=>s.classList.toggle('filled',i<score));}
+async function saveQual(id){
+  const qc=await getConfig('quality_config',{selectedGrid:'mmat',customCriteria:[]});const grid=QUALITY_GRIDS[qc.selectedGrid]||QUALITY_GRIDS.mmat;const criteria=qc.selectedGrid==='custom'?(qc.customCriteria||[]):grid.criteria;
+  const a=await dbGet('articles',id);a.qualityCriteriaResults={};criteria.forEach((c,i)=>{const s=document.getElementById(`qc-${id}-${i}`);if(s&&s.value)a.qualityCriteriaResults[c.id||c.label]=s.value;});
+  a.qualityGrid=grid.name;const n=document.getElementById(`qnotes-${id}`);if(n)a.qualityNotes=n.value;a.status=STATUS.QUALITY_DONE;await dbPut('articles',a);toast('Évaluation sauvegardée');renderPage();
+}
+
+// ============================================================
+// STEP 8: Extraction (metadata pre-fill + custom fields)
+// ============================================================
+async function renderStep8(){
+  const proto = await getConfig('protocol',{extractionFields:['Objectif','Méthodologie','Participants','Contexte','Résultats principaux','Limites']});
+  const fields = proto.extractionFields || ['Objectif','Méthodologie','Participants','Contexte','Résultats principaux','Limites'];
+  const el=allArticles.filter(a=>a.status===STATUS.QUALITY_DONE||a.status===STATUS.EXTRACTION_DONE);
+  return `<div class="card"><h3>Extraction des données</h3><p class="desc">Récupérez les informations clés de chaque article inclus. Les métadonnées sont pré-remplies. Les champs d'extraction sont configurables dans le <a href="#" onclick="document.querySelector('[data-page=step2]').click();return false" style="color:var(--primary);font-weight:600">Protocole</a>.</p></div>
+    ${!el.length?'<div class="card"><div class="empty-state"><div class="empty-icon">—</div><p>Aucun article prêt pour l\'extraction.</p></div></div>':
+    el.map(a=>{
+      const extData = a.extractionData || {};
+      return `<div class="screening-card">
+      <div style="display:flex;justify-content:space-between;align-items:start"><div><h4>${esc(a.title)}</h4><div class="authors">${esc(a.authors||'')} — ${a.year||'?'}</div></div>${a.status===STATUS.EXTRACTION_DONE?'<span class="tag tag-green">Extrait</span>':'<span class="tag tag-yellow">À extraire</span>'}</div>
+      ${renderArticleLinks(a)}
+      <div class="meta-block">
+        <div class="meta-block-title">Métadonnées</div>
+        <div class="meta-block-grid">
+          <div><strong>Auteurs :</strong> ${esc(a.authors||'—')}</div>
+          <div><strong>Année :</strong> ${a.year||'—'}</div>
+          <div><strong>Revue :</strong> ${esc(a.journal||'—')}</div>
+          <div><strong>DOI :</strong> ${a.doi?`<a href="https://doi.org/${esc(a.doi)}" target="_blank" style="color:var(--primary)">${esc(a.doi)}</a>`:'—'}</div>
+          ${a.volume?`<div><strong>Volume :</strong> ${esc(a.volume)}</div>`:''}
+          ${a.pages?`<div><strong>Pages :</strong> ${esc(a.pages)}</div>`:''}
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px">
+        ${fields.map((f,i)=>`<div class="form-group"><label>${esc(f)}</label><textarea id="exf-${a.id}-${i}" rows="2" style="font-size:12px">${esc(extData[f]||'')}</textarea></div>`).join('')}
+      </div>
+      <div class="form-group"><label>Notes</label><textarea id="en-${a.id}" rows="2" style="font-size:12px" placeholder="Notes complémentaires...">${esc(a.ext_notes||'')}</textarea></div>
+      <button class="btn btn-primary btn-sm" onclick="saveExt(${a.id})">Sauvegarder</button>
+    </div>`;}).join('')}`;
+}
+async function saveExt(id){
+  const proto = await getConfig('protocol',{extractionFields:['Objectif','Méthodologie','Participants','Contexte','Résultats principaux','Limites']});
+  const fields = proto.extractionFields || ['Objectif','Méthodologie','Participants','Contexte','Résultats principaux','Limites'];
+  const a=await dbGet('articles',id);
+  if(!a.extractionData) a.extractionData = {};
+  fields.forEach((f,i)=>{
+    const el = document.getElementById(`exf-${id}-${i}`);
+    if(el) a.extractionData[f] = el.value;
+  });
+  a.ext_notes=document.getElementById(`en-${id}`)?.value||'';
+  a.status=STATUS.EXTRACTION_DONE;await dbPut('articles',a);toast('Extraction sauvegardée');renderPage();
+}
+
+// ============================================================
+// STEP 9: Synthesis & PRISMA
+// ============================================================
+async function renderStep9(){
+  const waves = await getConfig('searchWaves',[]);
+  const searches = await getConfig('searches',[]);
+
+  // Helper: compute stats for a set of articles
+  function colStats(arts) {
+    const total = arts.length;
+    const dups = arts.filter(a=>a.status===STATUS.DUPLICATE).length;
+    const screened = arts.filter(a=>a.status!==STATUS.DUPLICATE&&a.status!==STATUS.IMPORTED).length;
+    const s1e = arts.filter(a=>a.status===STATUS.SCREEN1_EXCLUDED).length;
+    const passedS1 = arts.filter(a=>![STATUS.IMPORTED,STATUS.DUPLICATE,STATUS.SCREEN1_PENDING,STATUS.SCREEN1_EXCLUDED].includes(a.status)).length;
+    const s2assessed = arts.filter(a=>[STATUS.SCREEN2_PENDING,STATUS.SCREEN2_INCLUDED,STATUS.SCREEN2_EXCLUDED,STATUS.QUALITY_PENDING,STATUS.QUALITY_DONE,STATUS.EXTRACTION_DONE,STATUS.FINAL].includes(a.status)).length;
+    const s2e = arts.filter(a=>a.status===STATUS.SCREEN2_EXCLUDED).length;
+    const passedS2 = arts.filter(a=>[STATUS.SCREEN2_INCLUDED,STATUS.QUALITY_PENDING,STATUS.QUALITY_DONE,STATUS.EXTRACTION_DONE,STATUS.FINAL].includes(a.status)).length;
+    return {total,dups,screened,s1e,passedS1,s2assessed,s2e,passedS2};
+  }
+
+  // Columns: initial DB search (wave 0, sourceType!=other), then each update wave, then "other methods"
+  const initialDbArts = allArticles.filter(a=>(a.searchWave||0)===0 && a.sourceType!=='other');
+  const otherArts = allArticles.filter(a=>a.sourceType==='other' && (a.searchWave||0)===0);
+
+  const columns = [];
+  // Col 1: Initial search
+  const initStats = colStats(initialDbArts);
+  const searchSummary = searches.map(s=>`${s.database} (n=${s.results})`).join(', ');
+  columns.push({header:'Recherche initiale en bases de données',headerClass:'col-db',stats:initStats,detail:searchSummary});
+
+  // Update waves
+  for(let i=0;i<waves.length;i++){
+    const wArts = allArticles.filter(a=>(a.searchWave||0)===(i+1));
+    const ws = colStats(wArts);
+    columns.push({header:`Mise à jour ${i+1} — ${esc(waves[i].label||'')}`,headerClass:'col-update',stats:ws,detail:waves[i].period||''});
+  }
+
+  // Other methods
+  const otherStats = colStats(otherArts);
+  const otherMethods = otherArts.map(a=>a.sourceMethod||'other').filter((v,i,a)=>a.indexOf(v)===i).map(m=>{const l={snowballing:'Snowballing',hand_search:'Recherche manuelle',grey_lit:'Littérature grise',expert:'Expert',other:'Autre'};return l[m]||m;}).join(', ');
+  columns.push({header:'Autres méthodes',headerClass:'col-other',stats:otherStats,detail:otherMethods,isOther:true});
+
+  const nCols = columns.length;
+  // Width for each column pair (main + excl) = 2 cells
+  // Each column gets: main cell + arrow cell + excl cell = 3 cells across
+  // But simpler: each column is one <td> with internal layout
+
+  // Exclusion reasons
+  const s1Reasons={}, s2Reasons={};
+  allArticles.forEach(a=>{
+    if(a.status===STATUS.SCREEN1_EXCLUDED && a.exclusionCriteriaHit) a.exclusionCriteriaHit.forEach(c=>s1Reasons[c]=(s1Reasons[c]||0)+1);
+    if(a.status===STATUS.SCREEN2_EXCLUDED && a.exclusionCriteriaHit) a.exclusionCriteriaHit.forEach(c=>s2Reasons[c]=(s2Reasons[c]||0)+1);
+  });
+  const rl = reasons => { const e=Object.entries(reasons).sort((a,b)=>b[1]-a[1]); return e.length?`<ul style="margin:2px 0 0 12px;padding:0;font-size:10px">${e.map(([c,n])=>`<li>${n} — ${esc(c)}</li>`).join('')}</ul>`:''; };
+
+  const totalQuality = allArticles.filter(a=>[STATUS.QUALITY_PENDING,STATUS.QUALITY_DONE,STATUS.EXTRACTION_DONE,STATUS.FINAL].includes(a.status)).length;
+  const qualExcl = allArticles.filter(a=>a.qualityExcluded).length;
+  const totalFinal = allArticles.filter(a=>[STATUS.EXTRACTION_DONE,STATUS.FINAL,STATUS.QUALITY_DONE].includes(a.status)).length;
+
+  // Build PRISMA table — each column rendered as a <td> with internal divs
+  function renderCol(col) {
+    const s = col.stats;
+    if (col.isOther && s.total===0) {
+      return `<td style="vertical-align:top;width:${Math.floor(100/nCols)}%">
+        <div class="pcol-header ${col.headerClass}">${col.header}</div>
+        <div class="pnode-empty">Aucune source complémentaire</div>
+      </td>`;
+    }
+    return `<td style="vertical-align:top;width:${Math.floor(100/nCols)}%">
+      <div class="pcol-header ${col.headerClass}">${col.header}</div>
+
+      <div class="pnode pmain">
+        <div class="pt">${s.total} publication(s) identifiée(s)</div>
+        ${col.detail?`<div class="pd">${col.detail}</div>`:''}
+      </div>
+
+      ${!col.isOther && s.dups>0?`
+      <div class="parrow-down">↓</div>
+      <div style="display:flex;gap:6px;align-items:center">
+        <div class="pnode pmain" style="flex:1">
+          <div class="pt">${s.total - s.dups} après dédoublonnage</div>
+        </div>
+        <span style="color:var(--gray-400)">→</span>
+        <div class="pnode pexcl" style="flex:0 0 38%">
+          <div class="pt" style="font-size:12px">${s.dups} doublon(s) retiré(s)</div>
+        </div>
+      </div>
+      `:!col.isOther?`
+      <div class="parrow-down">↓</div>
+      <div class="pnode pmain">
+        <div class="pt">${s.total - s.dups} après dédoublonnage</div>
+      </div>
+      `:''}
+
+      <div class="parrow-down">↓</div>
+      <div style="display:flex;gap:6px;align-items:center">
+        <div class="pnode pmain" style="flex:1">
+          <div class="pt">${s.screened} évalué(s) sur titre/abstract</div>
+        </div>
+        ${s.s1e?`<span style="color:var(--gray-400)">→</span>
+        <div class="pnode pexcl" style="flex:0 0 38%">
+          <div class="pt" style="font-size:12px">${s.s1e} exclu(s)</div>
+        </div>`:''}
+      </div>
+
+      <div class="parrow-down">↓</div>
+      <div style="display:flex;gap:6px;align-items:center">
+        <div class="pnode pmain" style="flex:1">
+          <div class="pt">${s.s2assessed} texte(s) intégral évalué(s)</div>
+        </div>
+        ${s.s2e?`<span style="color:var(--gray-400)">→</span>
+        <div class="pnode pexcl" style="flex:0 0 38%">
+          <div class="pt" style="font-size:12px">${s.s2e} exclu(s)</div>
+        </div>`:''}
+      </div>
+
+      <div class="parrow-down">↓</div>
+      <div class="pnode pmain">
+        <div class="pt">${s.passedS2} restant(s)</div>
+      </div>
+    </td>`;
+  }
+
+  return `
+    <div class="card"><h3>Diagramme de flux PRISMA 2020</h3>
+      <div style="overflow-x:auto">
+        <table class="prisma-table" style="min-width:${nCols*280}px">
+          <tr>${columns.map(renderCol).join('')}</tr>
+        </table>
+
+        <div style="max-width:420px;margin:8px auto;text-align:center">
+          <div class="parrow-down">↓</div>
+          <div class="pnode pmain" style="text-align:center">
+            <div class="pt">${totalQuality} article(s) évalué(s) en qualité</div>
+            ${qualExcl?`<div class="pd">${qualExcl} exclu(s) après évaluation</div>`:''}
+          </div>
+          <div class="parrow-down">↓</div>
+          <div class="pnode pfinal" style="text-align:center">
+            <div class="pt" style="font-size:15px">Études incluses dans la synthèse</div>
+            <div class="pv">${totalFinal}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    ${Object.keys(s1Reasons).length||Object.keys(s2Reasons).length?`<div class="card"><h3>Détail des raisons d'exclusion</h3>
+      ${Object.keys(s1Reasons).length?`<p style="font-size:13px;font-weight:600;color:var(--gray-600);margin-bottom:6px">Screening titre / abstract</p><table><thead><tr><th>Critère non rempli</th><th>N</th></tr></thead><tbody>${Object.entries(s1Reasons).sort((a,b)=>b[1]-a[1]).map(([c,n])=>`<tr><td>${esc(c)}</td><td style="font-weight:700">${n}</td></tr>`).join('')}</tbody></table>`:''}
+      ${Object.keys(s2Reasons).length?`<p style="font-size:13px;font-weight:600;color:var(--gray-600);margin:14px 0 6px">Screening texte intégral</p><table><thead><tr><th>Critère non rempli</th><th>N</th></tr></thead><tbody>${Object.entries(s2Reasons).sort((a,b)=>b[1]-a[1]).map(([c,n])=>`<tr><td>${esc(c)}</td><td style="font-weight:700">${n}</td></tr>`).join('')}</tbody></table>`:''}
+    </div>`:''}
+
+    <div class="card"><h3>Synthèse narrative</h3>
+      <div class="form-group"><textarea id="synthesis-text" rows="10" placeholder="Rédigez votre synthèse ici...">${esc(await getConfig('synthesis',''))}</textarea></div>
+      <button class="btn btn-primary" onclick="saveSynthesis()">Sauvegarder</button>
+    </div>`;
+}
+async function saveSynthesis(){await setConfig('synthesis',document.getElementById('synthesis-text').value);toast('Synthèse sauvegardée');}
+
+// ============================================================
+// EXPORT
+// ============================================================
+function renderExport(){return `
+  <div class="card"><h3>Exporter les données</h3><div class="export-options">
+    <div class="export-option" onclick="exportCSV()"><div class="export-icon">CSV</div><div class="export-label">Export complet</div></div>
+    <div class="export-option" onclick="exportCSVExt()"><div class="export-icon">CSV</div><div class="export-label">Tableau d'extraction</div></div>
+    <div class="export-option" onclick="exportProject()"><div class="export-icon">JSON</div><div class="export-label">Projet complet</div></div>
+    <div class="export-option" onclick="exportBib()"><div class="export-icon">BIB</div><div class="export-label">BibTeX des inclus</div></div>
+    <div class="export-option" onclick="exportPRISMA()"><div class="export-icon">TXT</div><div class="export-label">Rapport PRISMA</div></div>
+  </div></div>
+  <div class="card"><h3>Réinitialiser</h3><p class="desc" style="color:var(--danger)">Action irréversible. Exportez votre projet avant de réinitialiser.</p><button class="btn btn-danger" onclick="if(confirm('Toutes les données seront supprimées. Continuer ?'))resetAll()">Réinitialiser</button></div>`;}
+
+function exportCSV(){const h=['ID','Titre','Auteurs','Année','Revue','DOI','Statut','Critères S1','Critères S2','Raison exclusion','Qualité','Source'];const rows=allArticles.map(a=>{const a1=a.criteriaAnswers?.screen1||{};const a2=a.criteriaAnswers?.screen2||{};return[a.id,a.title,a.authors,a.year,a.journal,a.doi,STATUS_LABELS[a.status]||a.status,Object.entries(a1).map(([c,v])=>c+':'+v).join('; '),Object.entries(a2).map(([c,v])=>c+':'+v).join('; '),a.exclusionReason,a.qualityScore,a.source].map(csvCell);});downloadFile('slrcraft_articles.csv',[h.join(','),...rows.map(r=>r.join(','))].join('\n'),'text/csv');}
+async function exportCSVExt(){
+  const proto = await getConfig('protocol',{extractionFields:['Objectif','Méthodologie','Participants','Contexte','Résultats principaux','Limites']});
+  const fields = proto.extractionFields || ['Objectif','Méthodologie','Participants','Contexte','Résultats principaux','Limites'];
+  const inc=allArticles.filter(a=>[STATUS.EXTRACTION_DONE,STATUS.FINAL,STATUS.QUALITY_DONE].includes(a.status));
+  const h=['Titre','Auteurs','Année','Revue','DOI',...fields,'Qualité','Notes'];
+  const rows=inc.map(a=>{const ext=a.extractionData||{};return[a.title,a.authors,a.year,a.journal,a.doi,...fields.map(f=>ext[f]||''),a.qualityScore,a.ext_notes].map(csvCell);});
+  downloadFile('slrcraft_extraction.csv',[h.join(','),...rows.map(r=>r.join(','))].join('\n'),'text/csv');
+}
+async function exportProject(){const a=await dbGetAll('articles');const c=await dbGetAll('config');downloadFile('slrcraft_projet.json',JSON.stringify({version:5,exportDate:new Date().toISOString(),articles:a,configs:c},null,2),'application/json');toast('Projet exporté');}
+async function importProject(event){const f=event.target.files[0];if(!f)return;try{const d=JSON.parse(await f.text());if(d.articles){await dbClear('articles');for(const a of d.articles)await dbPut('articles',a);}if(d.configs){await dbClear('config');for(const c of d.configs)await dbPut('config',c);}toast('Projet chargé');renderPage();}catch(e){toast('Erreur: '+e.message,'error');}event.target.value='';}
+function exportBib(){const inc=allArticles.filter(a=>[STATUS.SCREEN2_INCLUDED,STATUS.QUALITY_PENDING,STATUS.QUALITY_DONE,STATUS.EXTRACTION_DONE,STATUS.FINAL].includes(a.status));const e=inc.map((a,i)=>{const k=(a.authors||'x').split(',')[0].trim().replace(/\s+/g,'')+( a.year||'');return`@article{${k}${i},\n  title = {${a.title||''}},\n  author = {${(a.authors||'').replace(/,/g,' and')}},\n  year = {${a.year||''}},\n  journal = {${a.journal||''}},\n  doi = {${a.doi||''}}\n}`;});downloadFile('slrcraft_inclus.bib',e.join('\n\n'),'text/plain');}
+function exportPRISMA(){const t=allArticles.length,d=allArticles.filter(a=>a.status===STATUS.DUPLICATE).length;downloadFile('slrcraft_prisma.txt',`RAPPORT PRISMA — SLRcraft\n${'='.repeat(40)}\nDate: ${new Date().toLocaleDateString('fr-FR')}\n\nRéférences importées: ${t}\nDoublons: ${d}\nUniques: ${t-d}\nExclus Screening 1: ${allArticles.filter(a=>a.status===STATUS.SCREEN1_EXCLUDED).length}\nExclus Screening 2: ${allArticles.filter(a=>a.status===STATUS.SCREEN2_EXCLUDED).length}\nIncluses dans la synthèse: ${allArticles.filter(a=>[STATUS.EXTRACTION_DONE,STATUS.FINAL,STATUS.QUALITY_DONE].includes(a.status)).length}\n`,'text/plain');}
+async function resetAll(){await dbClear('articles');await dbClear('config');await dbClear('extractions');toast('Données réinitialisées');renderPage();}
+
+// ============================================================
+// ARTICLE DETAIL
+// ============================================================
+async function showArticleDetail(id){
+  const a=await dbGet('articles',id);if(!a)return;
+  const critHtml = a.criteriaAnswers ? ['screen1','screen2'].map(sk=>{
+    const ans=a.criteriaAnswers[sk];if(!ans||!Object.keys(ans).length)return'';
+    const label=sk==='screen1'?'Screening Titre/Abstract':'Screening Texte intégral';
+    return `<div style="margin-bottom:12px"><strong>${label}</strong><div style="margin-top:4px;font-size:12px">${Object.entries(ans).map(([c,v])=>`<div style="display:flex;justify-content:space-between;padding:3px 0;border-bottom:1px solid var(--gray-100)"><span>${esc(c)}</span><span style="font-weight:600;color:${v==='oui'?'var(--success)':v==='non'?'var(--danger)':'var(--warning)'}">${v==='oui'?'Oui':v==='non'?'Non':'?'}</span></div>`).join('')}</div></div>`;
+  }).join('') : '';
+
+  showModal(`<h3>${esc(a.title||'Sans titre')}</h3>
+    <div style="margin-bottom:14px"><p style="color:var(--gray-500);font-size:13px">${esc(a.authors||'')} — ${a.year||'?'}</p><p style="color:var(--gray-500);font-size:13px">${esc(a.journal||'')}</p>${renderArticleLinks(a)}<div style="margin-top:8px">${statusTag(a.status)}</div></div>
+    ${a.abstract?`<div style="margin-bottom:14px"><strong>Résumé</strong><p style="font-size:13px;color:var(--gray-600);margin-top:4px;line-height:1.6">${esc(a.abstract)}</p></div>`:''}
+    ${critHtml}
+    ${a.exclusionReason?`<div style="margin-bottom:12px"><strong>Raison d'exclusion</strong><p style="font-size:13px;color:var(--danger);margin-top:4px">${esc(a.exclusionReason)}</p></div>`:''}
+    ${a.qualityScore?`<div style="margin-bottom:12px"><strong>Qualité</strong> ${a.qualityGrid?'('+esc(a.qualityGrid)+')':''}<p style="margin-top:4px">${'★'.repeat(a.qualityScore)}${'☆'.repeat(5-a.qualityScore)}</p></div>`:''}
+    <div class="form-group"><label>Notes</label><textarea id="detail-notes" rows="3">${esc(a.notes||'')}</textarea></div>
+    <div class="modal-actions"><button class="btn btn-danger btn-sm" onclick="deleteArticle(${a.id});closeModal()">Supprimer</button><button class="btn btn-secondary" onclick="closeModal()">Fermer</button><button class="btn btn-primary" onclick="saveDetailNotes(${a.id})">Sauvegarder</button></div>`);
+}
+async function saveDetailNotes(id){const a=await dbGet('articles',id);a.notes=document.getElementById('detail-notes').value;await dbPut('articles',a);closeModal();toast('Notes sauvegardées');}
+async function deleteArticle(id){if(!confirm('Supprimer cet article ?'))return;await dbDelete('articles',id);renderPage();}
+
+// ============================================================
+// INIT
+// ============================================================
+openDB().then(()=>renderPage()).catch(e=>console.error('DB:',e));
+</script>
+</body>
+</html>
