@@ -48,7 +48,7 @@ Ce projet est distribué sous licence [GPL v3](https://www.gnu.org/licenses/gpl-
 Si vous utilisez SLRcraft dans vos travaux, merci de le citer :
 
 ```
-Coppe, T. (2026). SLRcraft: A single-file tool for systematic literature reviews (Version 1.0.0) [Software]. https://github.com/thibaultcoppe/SLRcraft
+Coppe, T. (2026). SLRcraft: An offline tool for systematic literature reviews (Version 1.0.0) [Software]. https://github.com/thibaultcoppe/SLRcraft
 ```
 
 Voir le fichier [CITATION.cff](CITATION.cff) pour le format de citation structuré.
