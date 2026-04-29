@@ -881,7 +881,7 @@ function renderScreeningCard(a, criteria, level) {
             <div class="eval-btns">
               <button class="eval-btn ${val==='oui'?'selected-oui':''}" onclick="saveCriterion(${a.id},${level},'${escJs(c)}','oui',this)">Oui</button>
               <button class="eval-btn ${val==='non'?'selected-non':''}" onclick="saveCriterion(${a.id},${level},'${escJs(c)}','non',this)">Non</button>
-              <button class="eval-btn ${val==='nsp'?'selected-nsp':''}" onclick="saveCriterion(${a.id},${level},'${escJs(c)}','nsp',this)">?</button>
+              ${level===1?`<button class="eval-btn ${val==='nsp'?'selected-nsp':''}" onclick="saveCriterion(${a.id},${level},'${escJs(c)}','nsp',this)">?</button>`:''}
             </div>
             <span class="save-indicator" id="si-${a.id}-${i}">✓</span>
           </div>`;
