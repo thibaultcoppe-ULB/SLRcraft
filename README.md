@@ -50,7 +50,7 @@ Ce projet est distribué sous licence [GPL v3](https://www.gnu.org/licenses/gpl-
 Si vous utilisez SLRcraft dans vos travaux, merci de le citer :
 
 ```
-Coppe, T. (2026). SLRcraft: An offline tool for systematic literature reviews (Version 1.0.0) [Software]. https://doi.org/10.5281/zenodo.19852967
+Coppe, T. (2026). SLRcraft : un outil offline pour les revues systématiques de la littérature (Version 1.0.0). https://doi.org/10.5281/zenodo.19852967
 ```
 
 Voir le fichier [CITATION.cff](CITATION.cff) pour le format de citation structuré.
