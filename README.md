@@ -66,6 +66,3 @@ Les contributions sont les bienvenues. Vous pouvez :
 
 - Signaler un bug ou proposer une amélioration via les [Issues](https://github.com/thibaultcoppe-ULB/SLRcraft/issues)
 - Proposer des modifications via une Pull Request
-- Forker le projet pour l'adapter à vos besoins
-
-- Forker le projet pour l'adapter à vos besoins
