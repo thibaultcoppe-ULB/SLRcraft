@@ -1,6 +1,6 @@
 # SLRcraft
 
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.19852967.svg?v=1)](https://doi.org/10.5281/zenodo.19852967)
+[![DOI](https://zenodo.org/badge/DOI/10.5281zenodo.19852966.svg?v=1)](https://doi.org/10.5281/zenodo.19852966)
 
 **Votre assistant pour les revues systématiques de la littérature**
 
