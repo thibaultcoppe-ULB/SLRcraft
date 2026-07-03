@@ -1,14 +1,17 @@
 cff-version: 1.2.0
 message: "If you use this software, please cite it as below."
 type: software
-title: "SLRcraft : un outil offline pour les revues systématiques de la littérature (Version 1.0.0) [Logiciel]"
-abstract: "Application web mono-fichier et offline pour la conduite de revues systématiques de la littérature. SLRcraft couvre l'ensemble du pipeline RSL : formulation de la question de recherche, définition du protocole, documentation des recherches, import et dédoublonnage des références, double screening avec évaluation par critères, évaluation de la qualité, extraction de données, diagramme de flux PRISMA 2020, et export."
+title: "SLRcraft : un outil offline pour les revues systématiques de la littérature (Version 2.0.0) [Logiciel]"
+abstract: "Application web mono-fichier et offline pour la conduite de revues systématiques de la littérature. SLRcraft couvre l'ensemble du pipeline RSL : formulation préalable des objectifs, définition du protocole, recherche documentaire et import des références, dédoublonnage, double screening avec évaluation par critères, évaluation de la qualité, extraction de données, diagramme de flux PRISMA 2020 et exports (RIS, CSV, BibTeX, HTML). Prend en charge le travail collaboratif hors ligne (allocation d'articles entre évaluateur·trices, double-aveugle, fusion des évaluations et résolution des désaccords). Version alpha en cours de test durant l'année académique 2026-2027."
 authors:
   - family-names: "Coppe"
     given-names: "Thibault"
     affiliation: "Université libre de Bruxelles (ULB) — CRSE — Shift Research Unit"
-version: "1.0.0"
-date-released: "2026-04-28"
+  - family-names: "Delhaye"
+    given-names: "Coralie"
+    affiliation: "Université libre de Bruxelles (ULB) — CRSE"
+version: "2.0.0"
+date-released: "2026-07-03"
 license: GPL-3.0-or-later
 doi: "10.5281/zenodo.19852967"
 repository-code: "https://github.com/thibaultcoppe-ULB/SLRcraft"
@@ -19,3 +22,4 @@ keywords:
   - PRISMA
   - education research
   - research methodology
+  - collaborative review
